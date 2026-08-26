@@ -1,0 +1,5 @@
+﻿game,officialNameAverage,aliasInclusiveAverage,averageFrameDifferencePct,officialPeak,aliasInclusivePeak,primaryChartDecision,qaNote
+메이플스토리M,0.2282,0.43067,88.72,0.89888,1.91821,official name only,Alias-inclusive request is a separate common-normalization frame and is retained for sensitivity QA only; it is not merged into the primary chart.
+검은사막 모바일,0.18161,0.21173,16.58,1.09324,1.21545,official name only,Alias-inclusive request is a separate common-normalization frame and is retained for sensitivity QA only; it is not merged into the primary chart.
+마비노기 모바일,3.53013,3.53424,0.12,9.43258,9.45425,official name only,Alias-inclusive request is a separate common-normalization frame and is retained for sensitivity QA only; it is not merged into the primary chart.
+아이온2,15.39509,15.39509,0.0,100.0,100.0,official name only,Alias-inclusive request is a separate common-normalization frame and is retained for sensitivity QA only; it is not merged into the primary chart.

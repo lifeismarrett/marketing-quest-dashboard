@@ -1,79 +1,86 @@
-# MARKETING QUEST Dashboard
+# MARKETING QUEST
 
-메이플스토리M 경쟁 MMORPG 벤치마킹 보고서를 **16:9 발표형 인터랙티브 대시보드**로 재구성한 React/Vite 프로젝트입니다. 일반 운영 어드민이 아니라, 발표자가 `DATA → 경쟁 압력 → 유저 반응 → 인사이트 → 실행 전략`을 한 흐름으로 설명할 수 있도록 설계했습니다.
+메이플스토리M 경쟁 벤치마킹 및 매출 성장 기회 발굴 인터랙티브 대시보드입니다. 경쟁 MMORPG 3종의 공개 시장 반응, 유저 후킹, 공개 BM 구조를 비교해 메이플스토리M이 내부 데이터로 먼저 검증할 매출 성장 후보를 좁힙니다.
 
-## 실행
+## Quick Navigation
 
-프로젝트 루트에서 아래 명령을 실행합니다.
+| 자료 | 링크 |
+|---|---|
+| Live Dashboard | [mktquestdash-kfhuh6sd.manus.space](https://mktquestdash-kfhuh6sd.manus.space/) |
+| Presentation | [`presentation/`](./presentation/) |
+| Executive Brief | [`presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf`](./presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf) |
+| Q&A Defense Book | [`presentation/README.md`](./presentation/README.md) — 현재 PDF는 MISSING FILE |
+| Research | [`research/`](./research/) |
+| Data Validation | [`research/datalab/`](./research/datalab/) |
+| Project Documentation | [`docs/`](./docs/) |
+| Representative Preview | [`preview/01_overview.png`](./preview/01_overview.png) |
+
+## Target / Benchmark
+
+| 구분 | 내용 |
+|---|---|
+| Target | 메이플스토리M |
+| Benchmarks | 검은사막 모바일 · 마비노기 모바일 · 아이온2 |
+| Analysis period | 2025-11-17~2026-08-10, 39주 |
+| Core data | 게임·이용자수 순위, NAVER DataLab 검색 관심, 공식 이벤트·업데이트·채널, 후킹·평판, 공개 BM 구조 |
+
+## Analysis Flow
+
+`시장 반응 → 경쟁 압력 → 유저 반응 → BM·매출 퍼널 → 검증 우선순위 → 전략`
+
+대시보드는 Mission Briefing, Performance, Battle Console, Retention, Monetization Funnel, Strategy Quest, Quest Clear의 7개 발표 상태로 구성됩니다. [`preview/`](./preview/)에서 공개 배포본의 대표 화면을 확인할 수 있습니다.
+
+## Evidence Principle
+
+> **PUBLIC EVIDENCE → PERFORMANCE SEPARATION → INTERNAL VALIDATION → DECISION SCOPE**
+>
+> **공개 확인 → 실제 성과와 분리 → 내부 검증 → 판단 범위**
+
+매출 순위는 실제 매출액이 아니며, NAVER DataLab 검색 관심은 절대 검색량이 아닌 공통 상대지수입니다. 이벤트와 순위의 동시 움직임은 직접 인과로 단정하지 않습니다. 검색 관심 Retention은 실제 이용자 Retention이 아니며, 공개 BM 구조는 실제 결제 성과를 의미하지 않습니다.
+
+## Data Validation
+
+기본 검색 관심 차트는 공식 게임명 4개를 하나의 NAVER DataLab 주간 요청에 넣은 공통 상대지수 프레임을 사용합니다. 관측 범위는 39주이며, 별칭 포함·장기 기간 결과는 별도 검증 산출물로 보관합니다. 검은사막 모바일 이용자수 순위의 결측은 보간하지 않습니다. 자세한 정의는 [`docs/DATA_DICTIONARY.md`](./docs/DATA_DICTIONARY.md)와 [`docs/EVIDENCE_BOUNDARY.md`](./docs/EVIDENCE_BOUNDARY.md)를 참조하십시오.
+
+## Repository Structure
+
+```text
+client/                 React/Vite 실행 소스와 런타임 데이터
+server/                 프로덕션 서버 진입점
+shared/                 공유 상수
+patches/                의존성 패치
+scripts/                DataLab 전처리·검증 스크립트
+docs/                   프로젝트 문서·QA·canonical 데이터 산출물
+presentation/           최종 발표 산출물과 누락 자료 안내
+research/               큐레이션된 DataLab·BM 조사자료
+preview/                공개 대시보드 대표 PNG
+```
+
+실행 데이터는 `client/src/data/`에 있으며 runtime import path를 변경하지 않습니다. `research/`는 근거 확인을 위한 복사본과 문서를 보관합니다.
+
+## Tech Stack
+
+React 19, Vite, TypeScript, Tailwind CSS, Recharts, Wouter, Node/Express build entry를 사용합니다. 실제 명령은 `package.json`을 기준으로 합니다.
+
+## Run Locally
 
 ```bash
 pnpm install
+pnpm run check
+pnpm run build
 pnpm dev
 ```
 
-프로덕션 빌드와 타입 검사는 각각 다음 명령으로 수행합니다.
+## Further Documentation
 
-```bash
-pnpm run check
-pnpm run build
-```
+- [`docs/PROJECT_OVERVIEW.md`](./docs/PROJECT_OVERVIEW.md)
+- [`docs/DATA_DICTIONARY.md`](./docs/DATA_DICTIONARY.md)
+- [`docs/EVIDENCE_BOUNDARY.md`](./docs/EVIDENCE_BOUNDARY.md)
+- [`docs/DEPLOYMENT_GUIDE.md`](./docs/DEPLOYMENT_GUIDE.md)
+- [`docs/INPUT_AUDIT.md`](./docs/INPUT_AUDIT.md)
+- [`research/README.md`](./research/README.md)
+- [`presentation/README.md`](./presentation/README.md)
 
-## 발표 조작
+## License / Usage Note
 
-좌측 **QUEST LOG**에서 원하는 섹션으로 이동할 수 있습니다. 상단의 이전/다음 버튼 또는 키보드 `←`와 `→`로도 섹션을 이동합니다. `PRESENTER MODE`를 켜면 현재 섹션의 1~3개 발표 큐가 오른쪽 보조 패널에 나타납니다. 검토·리허설 시에는 URL에 `?section=home`, `performance`, `battle`, `retention`, `monetization`, `strategy`, `clear`를 붙여 해당 화면에서 바로 시작할 수 있습니다.
-
-| 섹션 | 핵심 발표 메시지 | 주요 상호작용 |
-|---|---|---|
-| Mission Briefing | 분석 목적과 데이터 신뢰도 원칙을 고정합니다. | `START QUEST` |
-| Performance | RE:BOOST 이후 순위 반등을 확인합니다. | 매출·이용자수·검색 관심 토글, 게임 필터, 차트 툴팁 |
-| Battle Console | 동시 이벤트 구간은 선제 관리 대상입니다. | **4사 통합**·개별 경쟁작 탭, 지표 토글, 이벤트 전용 보기, 케이스 상세 |
-| Retention | 성장지원은 강점, 복귀·콜라보는 공백입니다. | 후킹 매트릭스, 검색 잔존 신호, 스토어 평판 비교 |
-| Monetization Funnel | 공개 BM 구조를 기준으로 벤치마킹 후보를 구분합니다. | 4사 BM 맵, 근거 상태, 공개·비공개 경계 |
-| Strategy Quest | 네 개의 퀘스트로 공백기 리스크를 분산합니다. | 퀘스트 카드 상세, WHY/HOW/RISK/KPI, 로드맵 |
-| Quest Clear | 정례 업데이트와 복귀 경험을 전략 방향으로 제시합니다. | Mission Briefing 복귀 |
-
-## 데이터 원칙
-
-최종 PPT의 숫자·주장·해석·전략 문구가 발표용 기준입니다. `client/src/data/dashboardData.ts`에는 최종 PPT에 내장된 차트 캐시에서 복원한 39주 순위 시계열과 공식 LiveOps 검증 자료를 담았습니다. 순위는 **낮을수록 우수**하며, 차트의 역방향 축과 보조 문구로 명시됩니다.
-
-검색 관심은 `client/src/data/searchInterestData.ts`의 **NAVER DataLab 공식명 4그룹 단일 주간 응답**을 사용합니다. 관측 범위는 2025-11-17~2026-08-10의 39주이고, 기기·성별·연령은 모두 미지정(전체)입니다. API의 `ratio`는 같은 요청 안의 최대값을 100으로 둔 상대 비율이므로, 절대 검색량·시장 점유율·DAU·매출·직접 리텐션으로 해석하지 않습니다.[1] 별칭 포함·장기 구간 요청은 검증 산출물로 별도 보관하며 기본 39주 차트와 결합하지 않습니다.
-
-경쟁작 이벤트와 순위 움직임은 타이밍 정렬 또는 연관 움직임으로 표시하며, 직접 인과관계로 단정하지 않습니다. RE:BOOST는 **메이플스토리M의 이벤트**이므로 메이플스토리M 선이 포함되는 `ALL`·`4사 통합`·메이플M 단독 차트에서만 `메이플M RE:BOOST`로 표기합니다. 경쟁작 단독 차트에는 체크·세로선·라벨을 노출하지 않습니다. 검은사막 모바일의 이용자수 순위는 최종 PPT의 결측 제한을 그대로 반영해 비교 불가 상태로 표시합니다.
-
-| 데이터 영역 | 구현상 처리 |
-|---|---|
-| 39주 게임(매출)/이용자수 순위 | 최종 PPT에 내장된 차트 캐시에서 복원한 값 사용 |
-| 검색 관심 | 4게임 공식명 단일 NAVER DataLab 주간 요청의 공통 최대값 100 상대지수 사용 |
-| 이벤트 마커 | 공식 LiveOps 재검증 워크북의 확인 이벤트 사용 |
-| 채널·뉴스·전략 헤드라인 | 최종 PPT의 기간·정의·문구 유지 |
-| 후킹·평판 | 최종 PPT 확정값을 정적 비교 정보로 표시 |
-| Peak 이후 검색 관심 잔존율 | 39주 공식명 DataLab 창에서 산출한 peak-relative 프록시. M0~M5는 4주 간격이며, 관측 범위 밖 값은 보간하지 않음 |
-
-## 파일 구조
-
-```text
-client/src/
-├── components/
-│   ├── QuestChrome.tsx       # 퀘스트 레일, 발표자 모드, 키보드 이동
-│   ├── QuestCharts.tsx       # 순위·검색 관심 Recharts 구성요소
-│   └── ui/                   # 템플릿 UI 프리미티브
-├── data/
-│   ├── dashboardData.ts      # 순위·이벤트·발표용 로컬 데이터
-│   └── searchInterestData.ts # 4게임 공식명 DataLab 39주 데이터 계약
-├── pages/
-│   └── Home.tsx              # 6개 발표 상태와 상호작용
-└── index.css                 # Quest Console Atelier 토큰과 반응형 스타일
-docs/
-├── INPUT_AUDIT.md            # 파일 인벤토리, 데이터 맵, 해석·결측 주의사항
-└── data/                     # 39주 원표·KPI·별칭 QA·장기 프레임·감사 기록
-```
-
-## 데이터 갱신 시 주의사항
-
-원시 자료를 갱신할 때에는 먼저 기간, 분모, 지표 정의가 최종 PPT와 같은지 확인해야 합니다. 범위가 다르면 헤드라인 값을 조용히 교체하지 말고, 별도 분석 버전 또는 화면 주석으로 차이를 표시합니다. 새 순위 시계열도 결측을 보간하지 않으며, 이벤트는 공식 출처·날짜·유형·증거 등급이 확인된 경우에만 차트 마커로 추가합니다. 검색 관심 갱신 시에는 네 게임을 **하나의** 동일 기간·단위·필터 요청에 넣고, 이름/별칭 규칙과 정규화 프레임이 다른 결과를 기본 차트에 합치지 않습니다.
-
-제공된 입력 패키지에 `03_FINAL_VISUALS` 캐릭터 시리즈는 포함되어 있지 않았으므로, 이 프로젝트는 제공된 PPT 장식 에셋과 추상적 퀘스트 배경만 사용합니다. 원본 캐릭터의 얼굴·실루엣·신원을 새로 그리거나 변형하지 않습니다.
-
-## 참고문헌
-
-[1] [NAVER 개발자 센터, 통합 검색어 트렌드 API](https://developers.naver.com/docs/serviceapi/datalab/search/search.md) — 주간 단위, 그룹별 키워드 배열, 기기·성별·연령 미지정 조건 및 `ratio`의 상대 비율 정의.
+이 저장소는 발표형 포트폴리오 프로젝트입니다. 공개 자료와 검증된 정적 데이터의 해석 경계를 문서에서 함께 확인해야 하며, 공개 데이터만으로 실제 결제 성과나 매출 인과를 확정하지 않습니다.

@@ -1,0 +1,15 @@
+{
+  "rawStartDate": "2025-11-17",
+  "rawEndDate": "2026-08-16",
+  "timeUnit": "week",
+  "weeklyRowCount": 39,
+  "observedStart": "2025-11-17",
+  "observedEnd": "2026-08-10",
+  "games": [
+    "메이플스토리M",
+    "검은사막 모바일",
+    "마비노기 모바일",
+    "아이온2"
+  ],
+  "allValuesFiniteAndInRange": true
+}

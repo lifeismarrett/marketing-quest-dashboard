@@ -1,0 +1,108 @@
+{
+  "source": "NAVER DataLab",
+  "timeUnit": "week",
+  "device": "all",
+  "gender": "all",
+  "age": "all",
+  "requests": {
+    "primary_official": {
+      "start": "2025-11-17",
+      "end": "2026-08-10",
+      "groups": [
+        {
+          "groupName": "메이플스토리M",
+          "keywords": [
+            "메이플스토리M"
+          ]
+        },
+        {
+          "groupName": "검은사막 모바일",
+          "keywords": [
+            "검은사막 모바일"
+          ]
+        },
+        {
+          "groupName": "마비노기 모바일",
+          "keywords": [
+            "마비노기 모바일"
+          ]
+        },
+        {
+          "groupName": "아이온2",
+          "keywords": [
+            "아이온2"
+          ]
+        }
+      ],
+      "file": "primary_official.json",
+      "returnedEnd": "2026-08-16"
+    },
+    "primary_alias": {
+      "start": "2025-11-17",
+      "end": "2026-08-10",
+      "groups": [
+        {
+          "groupName": "메이플스토리M",
+          "keywords": [
+            "메이플스토리M",
+            "메이플M"
+          ]
+        },
+        {
+          "groupName": "검은사막 모바일",
+          "keywords": [
+            "검은사막 모바일",
+            "검사모"
+          ]
+        },
+        {
+          "groupName": "마비노기 모바일",
+          "keywords": [
+            "마비노기 모바일",
+            "마비노기M"
+          ]
+        },
+        {
+          "groupName": "아이온2",
+          "keywords": [
+            "아이온2"
+          ]
+        }
+      ],
+      "file": "primary_alias.json",
+      "returnedEnd": "2026-08-16"
+    },
+    "secondary_long_official": {
+      "start": "2023-08-01",
+      "end": "2026-08-26",
+      "groups": [
+        {
+          "groupName": "메이플스토리M",
+          "keywords": [
+            "메이플스토리M"
+          ]
+        },
+        {
+          "groupName": "검은사막 모바일",
+          "keywords": [
+            "검은사막 모바일"
+          ]
+        },
+        {
+          "groupName": "마비노기 모바일",
+          "keywords": [
+            "마비노기 모바일"
+          ]
+        },
+        {
+          "groupName": "아이온2",
+          "keywords": [
+            "아이온2"
+          ]
+        }
+      ],
+      "file": "secondary_long_official.json",
+      "returnedEnd": "2026-08-26"
+    }
+  }
+}
