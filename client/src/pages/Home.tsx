@@ -1,25 +1,314 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
-
 /**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
+ * Quest Console Atelier style: a presentation-first strategy board, not a generic admin dashboard.
+ * It keeps analytical surfaces light, uses navy for command states, and reserves ember gold for progress and insight.
  */
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertTriangle, ArrowUpRight, CalendarDays, Check, CircleDot, Compass, ExternalLink, Flag, Gamepad2, Layers3, Play, ShieldCheck, Sparkles, Swords, Target, TrendingUp, Users, X } from "lucide-react";
+import { QuestChrome, type QuestSection } from "@/components/QuestChrome";
+import { RankTrendChart, SearchInterestChart, type GameName, type RankMetric } from "@/components/QuestCharts";
+import { battleCases, verifiedEvents } from "@/data/dashboardData";
+
+const sections: QuestSection[] = ["home", "performance", "battle", "retention", "strategy", "clear"];
+const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
+
+const notes: Record<QuestSection, string[]> = {
+  home: ["발표의 질문을 먼저 고정합니다: 경쟁 압력 속에서 무엇을 실행할 것인가.", "최종 PPT의 수치와 해석을 기준으로, 원시 데이터는 탐색 근거로만 사용합니다."],
+  performance: ["순위 축은 역방향입니다. 선이 위로 갈수록 더 좋은 순위입니다.", "RE:BOOST 구간의 동시 반등은 타이밍 정렬이며, 직접 인과로 표현하지 않습니다."],
+  battle: ["상대 탭을 바꾸면 검증된 이벤트 타이밍과 순위 움직임을 같이 볼 수 있습니다.", "동반·상극은 사건의 결과가 아니라 관측된 연관 움직임입니다."],
+  retention: ["성장지원과 콘텐츠추가는 메이플M의 강점, IP 콜라보와 상시복귀지원은 공백으로 연결됩니다.", "잔존율은 검색 관심의 상대적 프록시이며 이용자 리텐션 자체가 아닙니다."],
+  strategy: ["네 개 퀘스트는 동시에 밀어붙이지 않고 리소스 제약 아래 단계화합니다.", "각 퀘스트의 KPI는 인과가 아닌 관리·검증 지표임을 강조합니다."],
+  clear: ["마지막 메시지는 단일 이벤트의 성공이 아니라, 정례 업데이트와 공백 최소화 체계입니다.", "성장지원형 자산과 높은 평점 신뢰도를 다음 실행의 기반으로 사용합니다."],
+};
+
+const retentionRows = [
+  ["성장지원형", "하이퍼버닝", "—", "레벨 85 → 100", "—"],
+  ["콘텐츠추가형", "칼리 · 렌 등", "세라핌 등", "기사 등", "권성 등"],
+  ["IP 콜라보형", "—", "붉은사막 (자사)", "산리오", "프로미스나인"],
+  ["상시복귀지원형", "—", "—", "—", "새싹뱃지 (28일 미접속 보상)"],
+];
+
+const retentionCurve = [
+  { stage: "M0", "메이플스토리M": 100, "검은사막 모바일": 100, "마비노기 모바일": 53, "아이온2": 100 },
+  { stage: "M1", "메이플스토리M": 25, "검은사막 모바일": 61, "마비노기 모바일": 100, "아이온2": 61 },
+  { stage: "M3", "메이플스토리M": 8, "검은사막 모바일": 27, "마비노기 모바일": 81, "아이온2": 9 },
+  { stage: "M6", "메이플스토리M": 3, "검은사막 모바일": 15, "마비노기 모바일": 41, "아이온2": 7 },
+  { stage: "M8", "메이플스토리M": 4.3, "검은사막 모바일": 4.5, "마비노기 모바일": 34.3, "아이온2": 18.6 },
+];
+
+const strategyQuests = [
+  { id: "q1", index: "QUEST 01", title: "IP · 브랜드 콜라보 확대", why: "동일 시기 콜라보 대비 화제성 격차가 확인된 공백을 보완합니다.", how: ["잠재 IP 롱리스트 작성", "파트너십 리드타임 산정", "티저·쇼케이스 확장 시점에 런칭"], risk: "디자인 보호·협상 리드타임·현장 운영 이슈", kpi: ["콜라보 주간 YouTube 조회수", "검색 관심 점유율 변화", "커뮤니티 ‘복귀’ 언급량"], color: "purple", horizon: "중기 · 1분기" },
+  { id: "q2", index: "QUEST 02", title: "상시 복귀지원 시스템 신설", why: "이벤트 타이밍과 무관한 안정적 복귀 채널을 확보합니다.", how: ["미접속 기준일(N일) 설계", "성장지원과 중복·시너지 검토", "소규모 테스트 후 확대"], risk: "보상 수준이 높으면 신규 유입 대비 왜곡", kpi: ["미접속 유저 재접속 전환율", "재접속 유저 D+7 잔존율", "‘복귀’ 언급량 변화"], color: "green", horizon: "장기 · 반기" },
+  { id: "q3", index: "QUEST 03", title: "시스템 리마스터 검토", why: "장수 서비스의 구조적 화제성을 정례 업데이트 체계로 전환합니다.", how: ["개발 리드타임 검토", "완료 기념 쇼케이스 설계", "단계적 개편 로드맵 공개"], risk: "개발 리드타임과 소규모 콘텐츠 공백", kpi: ["장기 서비스 안정성", "스토어 평점 4.6 유지 여부"], color: "blue", horizon: "중장기 · 1년+" },
+  { id: "q4", index: "QUEST 04", title: "이벤트 타이밍 관리 체계", why: "경쟁사 대형 이벤트와 충돌하는 구간의 경쟁 압력을 선제 관리합니다.", how: ["4사 캘린더 상시 갱신", "자사 일정과 자동 대조", "Low/Mid/High 압력 등급", "날짜 조정·화제성 보강·모니터링 선택"], risk: "경쟁사 일정의 변동성과 데이터 갱신 지연", kpi: ["캘린더 갱신 주기 준수율", "압력 단계 대응 건수"], color: "gold", horizon: "단기 · 1개월" },
+];
+
+function SectionEyebrow({ index, label }: { index: string; label: string }) {
+  return <div className="section-eyebrow"><span>{index}</span>{label}</div>;
+}
+
+function MetricPill({ label, value, detail, tone = "gold" }: { label: string; value: string; detail: string; tone?: string }) {
+  return (
+    <div className={`metric-pill ${tone}`}>
+      <span>{label}</span>
+      <b>{value}</b>
+      <small>{detail}</small>
+    </div>
+  );
+}
+
+function MiniLine({ label, children, tone = "gold" }: { label: string; children: React.ReactNode; tone?: string }) {
+  return <div className={`mini-line ${tone}`}><span>{label}</span><strong>{children}</strong></div>;
+}
+
+function sectionFromQuery(): QuestSection {
+  const requested = new URLSearchParams(window.location.search).get("section") as QuestSection | null;
+  return requested && sections.includes(requested) ? requested : "home";
+}
+
 export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+  const [active, setActive] = useState<QuestSection>(sectionFromQuery);
+  const [presenterMode, setPresenterMode] = useState(false);
+  const [performanceMetric, setPerformanceMetric] = useState<"revenue" | "users" | "search">("revenue");
+  const [performanceGame, setPerformanceGame] = useState<GameName>("ALL");
+  const [battleOpponent, setBattleOpponent] = useState<GameName>("아이온2");
+  const [battleMetric, setBattleMetric] = useState<RankMetric>("revenue");
+  const [eventOnly, setEventOnly] = useState(false);
+  const [activeCase, setActiveCase] = useState("case-aion-reboost");
+  const [activeQuest, setActiveQuest] = useState("q1");
+
+  const currentQuest = strategyQuests.find((item) => item.id === activeQuest) ?? strategyQuests[0];
+  const battleCasesForOpponent = battleCases.filter((item) => item.opponent === battleOpponent);
+  const selectedCase = battleCases.find((item) => item.id === activeCase) ?? battleCasesForOpponent[0] ?? battleCases[0];
+  const nearbyEvents = useMemo(() => verifiedEvents.filter((event) => event.major).slice(-8), []);
+
+  const changeSection = (next: QuestSection) => setActive(next);
+  const moveSection = (direction: number) => {
+    const index = sections.indexOf(active);
+    const nextIndex = (index + direction + sections.length) % sections.length;
+    setActive(sections[nextIndex]);
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") moveSection(-1);
+      if (event.key === "ArrowRight") moveSection(1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
-    </div>
+    <QuestChrome
+      activeSection={active}
+      onSectionChange={changeSection}
+      onPrevious={() => moveSection(-1)}
+      onNext={() => moveSection(1)}
+      presenterMode={presenterMode}
+      onPresenterModeChange={setPresenterMode}
+      note={notes[active]}
+    >
+      {active === "home" && (
+        <section className="stage-section mission-section">
+          <img className="mission-bg" src="/manus-storage/marketing-quest-hero_afbd5ac2.png" alt="" aria-hidden="true" />
+          <img className="mission-ring" src="/manus-storage/magic_circle_gold_55178ddb.png" alt="" aria-hidden="true" />
+          <div className="mission-main">
+            <SectionEyebrow index="00" label="MISSION BRIEFING" />
+            <div className="mission-kicker">MARKETING QUEST</div>
+            <h1>메이플스토리M<br /><em>경쟁 벤치마킹</em> 대시보드</h1>
+            <p className="mission-copy">경쟁 MMORPG 3종의 이벤트, 마켓 순위, 채널 반응과 리텐션 후킹을 연결해 <b>다음 마케팅 퀘스트</b>를 도출합니다.</p>
+            <Button className="start-quest" onClick={() => setActive("performance")}><Play size={15} fill="currentColor" /> START QUEST</Button>
+          </div>
+          <div className="mission-side">
+            <div className="roster-card">
+              <div className="roster-head"><span>PARTY ROSTER</span><ShieldCheck size={17} /></div>
+              {["메이플스토리M · TARGET", "검은사막 모바일 · COMPETITOR", "마비노기 모바일 · COMPETITOR", "아이온2 · COMPETITOR"].map((item, index) => (
+                <div className={`roster-row roster-${index}`} key={item}><i>{String(index + 1).padStart(2, "0")}</i><b>{item}</b></div>
+              ))}
+            </div>
+            <div className="trust-card">
+              <div><CircleDot size={15} /><b>DATA TRUST</b></div>
+              <p>이벤트·케이스는 자체 리서치 이중검증, 마켓 순위는 39주 실측 기준. 해석은 상관과 인과를 구분합니다.</p>
+            </div>
+          </div>
+          <div className="mission-stats">
+            <MetricPill label="COMPARISON" value="4 GAMES" detail="메이플M + 경쟁작 3종" />
+            <MetricPill label="OBSERVATION" value="39 WEEKS" detail="매출·이용자수 순위" tone="navy" />
+            <MetricPill label="MAJOR EVENTS" value="32 CASES" detail="분석 대상 대형 이벤트" tone="green" />
+            <MetricPill label="COMPETITIVE CASES" value="3 CASES" detail="핵심 경쟁 압력 사례" tone="purple" />
+          </div>
+        </section>
+      )}
+
+      {active === "performance" && (
+        <section className="stage-section performance-section">
+          <div className="section-title-row">
+            <div><SectionEyebrow index="01" label="PERFORMANCE" /><h2>RE:BOOST 이후 매출 순위 반등이 확인됨</h2><p>검색 관심과 순위 변화를 함께 읽어, 39주 관측 중 가장 큰 개선 구간을 확인합니다.</p></div>
+            <div className="section-flag"><TrendingUp size={17} /><span>RE:BOOST SIGNAL</span></div>
+          </div>
+          <div className="control-row">
+            <Tabs value={performanceMetric} onValueChange={(value) => setPerformanceMetric(value as typeof performanceMetric)}>
+              <TabsList className="quest-tabs">
+                <TabsTrigger value="revenue">매출 순위</TabsTrigger>
+                <TabsTrigger value="users">이용자수 순위</TabsTrigger>
+                <TabsTrigger value="search">검색 관심</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <div className="game-filter" aria-label="게임 필터">
+              {games.map((game) => <button key={game} className={performanceGame === game ? "selected" : ""} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
+            </div>
+          </div>
+          <div className="performance-grid">
+            <div className="main-chart-card">
+              {performanceMetric === "search" ? <SearchInterestChart /> : <RankTrendChart metric={performanceMetric} game={performanceGame} />}
+            </div>
+            <aside className="performance-insights">
+              <div className="impact-card">
+                <span className="eyebrow">RE:BOOST IMPACT</span>
+                <div className="impact-number"><b>87</b><ArrowUpRight size={25} /><b>34</b><small>위</small></div>
+                <p>게임(매출) 순위 53단계 개선</p>
+                <div className="impact-foot">2026.07.16–07.31 · 사전등록~출시</div>
+              </div>
+              <MiniLine label="SEARCH PEAK" tone="gold">1.92 <small>2026.07.27</small></MiniLine>
+              <MiniLine label="USER RANK" tone="blue">69 → 33위 <small>36단계 개선</small></MiniLine>
+              <MiniLine label="BEST REVENUE RANK" tone="green">21위 <small>2026.08.03</small></MiniLine>
+              <div className="caution-box"><AlertTriangle size={15} /><span>검색·콘텐츠·뉴스의 동시 반등은 <b>시기적 동행</b>이며 직접 인과로 단정하지 않습니다.</span></div>
+            </aside>
+          </div>
+          <div className="channel-strip">
+            <span className="strip-label">CHANNEL CROSS-CHECK</span>
+            <MiniLine label="NAVER DATALAB" tone="gold">0.39 → 1.02 <small>최근 4주 +161.6%</small></MiniLine>
+            <MiniLine label="OFFICIAL YOUTUBE" tone="blue">128편 <small>중앙값 32,148회</small></MiniLine>
+            <MiniLine label="BIGKinds NEWS" tone="purple">85건 <small>원자료 396건 중 21.5%</small></MiniLine>
+            <MiniLine label="MARKET RESPONSE" tone="green">TOP 30 <small>2026.08.10 · 29위</small></MiniLine>
+          </div>
+        </section>
+      )}
+
+      {active === "battle" && (
+        <section className="stage-section battle-section">
+          <img className="battle-wreath" src="/manus-storage/graph_vs_wreath_6ef46ce4.png" alt="" aria-hidden="true" />
+          <div className="section-title-row">
+            <div><SectionEyebrow index="02" label="COMPETITOR BATTLE" /><h2>동시 이벤트 구간은 선제 관리 대상</h2><p>동일 구간의 이벤트와 순위 움직임을 대조합니다. 직접 인과가 아닌 연관 움직임으로 해석합니다.</p></div>
+            <div className="battle-stamp"><Swords size={18} /> VS</div>
+          </div>
+          <div className="battle-controls">
+            <div className="opponent-tabs">
+              {["검은사막 모바일", "아이온2", "마비노기 모바일"].map((game) => <button key={game} onClick={() => { setBattleOpponent(game as GameName); setActiveCase(battleCases.find((item) => item.opponent === game)?.id ?? "case-aion-reboost"); }} className={battleOpponent === game ? "selected" : ""}>메이플M <span>VS</span> {game.replace(" 모바일", "M")}</button>)}
+            </div>
+            <div className="battle-toggle-group">
+              <button className={battleMetric === "revenue" ? "selected" : ""} onClick={() => setBattleMetric("revenue")}>게임 순위</button>
+              <button className={battleMetric === "users" ? "selected" : ""} onClick={() => setBattleMetric("users")}>이용자수</button>
+              <button className={eventOnly ? "selected" : ""} onClick={() => setEventOnly(!eventOnly)}><CalendarDays size={13} /> 이벤트만</button>
+            </div>
+          </div>
+          <div className="battle-grid">
+            <div className="battle-chart-card">
+              <RankTrendChart metric={battleMetric} game={battleOpponent} compact />
+              <div className={`event-timeline ${eventOnly ? "event-focus" : ""}`}>
+                {nearbyEvents.filter((event) => event.game === "메이플스토리 M" || event.game === battleOpponent).slice(-5).map((event) => (
+                  <div className={`event-chip ${event.game === "메이플스토리 M" ? "maple" : "opponent"}`} key={event.id}>
+                    <small>{event.date?.slice(5, 10)}</small><span>{event.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <aside className="case-console">
+              <div className="case-console-head"><span>CASE STUDY</span><b>동반 / 상극</b></div>
+              <div className="case-list">
+                {(battleCasesForOpponent.length ? battleCasesForOpponent : battleCases).map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small>{item.mapleEvent}</small></button>)}
+              </div>
+              <div className="case-detail">
+                <span className={`outcome-badge ${selectedCase.outcome}`}>{selectedCase.outcome}</span>
+                <h3>{selectedCase.mapleEvent}</h3>
+                <div className="case-vs"><span>MAPLE M</span><i>↔</i><span>{selectedCase.opponentEvent}</span></div>
+                <p>{selectedCase.detail}</p>
+              </div>
+            </aside>
+          </div>
+          <div className="collision-callout"><Compass size={17} /><b>4사 캘린더 대조</b><span>이벤트 일정을 정기 갱신하고, 같은 기간 경쟁사 이벤트의 수·규모로 Low / Mid / High 경쟁 압력을 판단합니다.</span><button onClick={() => setActive("strategy")}>대응 퀘스트 보기 <ArrowUpRight size={14} /></button></div>
+        </section>
+      )}
+
+      {active === "retention" && (
+        <section className="stage-section retention-section">
+          <div className="section-title-row">
+            <div><SectionEyebrow index="03" label="RETENTION" /><h2>성장지원은 강점, 복귀·콜라보는 공백</h2><p>후킹 유형의 보유 격차와 화제성·평판·검색 잔존 신호를 한 화면에서 비교합니다.</p></div>
+            <div className="section-flag"><Layers3 size={17} /><span>SKILL BOOK · 4 TYPES</span></div>
+          </div>
+          <div className="retention-grid">
+            <div className="hooking-card">
+              <div className="card-header"><span className="eyebrow">HOOKING MATRIX</span><h3>후킹 유형 보유 현황</h3></div>
+              <div className="hooking-matrix">
+                <div className="matrix-cell header">후킹유형</div><div className="matrix-cell header maple">메이플스토리M</div><div className="matrix-cell header">검은사막 모바일</div><div className="matrix-cell header">마비노기 모바일</div><div className="matrix-cell header">아이온2</div>
+                {retentionRows.flatMap((row) => row.map((value, index) => <div key={`${row[0]}-${index}`} className={`matrix-cell ${index === 1 ? "maple" : ""} ${value === "—" ? "empty" : ""}`}>{value}</div>))}
+              </div>
+              <div className="ownership-row"><span>보유 개수 (4개 유형 중)</span><b className="maple">메이플M 2</b><b className="bdm">검은사막M 2</b><b className="mab">마비노기M 3</b><b className="aion">아이온2 3</b></div>
+            </div>
+            <div className="retention-side">
+              <div className="collab-gap-card"><span className="eyebrow">IP COLLAB GAP</span><h3>화제성 격차의 핵심</h3><div><b>69×</b><span>동일 시기 YouTube 조회수 격차<br />마비노기 모바일 산리오 사례 대비</span></div><p>IP 콜라보형은 메이플M의 확인된 공백입니다.</p></div>
+              <div className="return-card"><span className="eyebrow">ALWAYS-ON RETURN</span><h3>아이온2의 새싹뱃지</h3><p>28일 미접속 후 자동 보상. 이벤트 타이밍과 무관하게 복귀 채널을 유지합니다.</p></div>
+            </div>
+            <div className="retention-chart-card">
+              <div className="card-header"><span className="eyebrow">SEARCH-INTEREST RETENTION</span><h3>출시 후 검색 관심 잔존율</h3><span className="proxy-note">자체 검색 피크 대비 · 프록시</span></div>
+              <div className="retention-svg-wrap">
+                <svg className="retention-svg" viewBox="0 0 570 194" role="img" aria-label="게임별 출시 후 검색 관심 잔존율 추이">
+                  {[0, 20, 40, 60, 80, 100].map((tick) => <g key={tick}><line x1="44" x2="556" y1={171 - tick * 1.34} y2={171 - tick * 1.34} stroke="#E5DED3" /><text x="28" y={175 - tick * 1.34} fill="#86808A" fontSize="10">{tick}</text></g>)}
+                  {Object.entries({ "메이플스토리M": "#F39C27", "검은사막 모바일": "#638AC0", "마비노기 모바일": "#AF63C3", "아이온2": "#34A476" }).map(([game, color]) => {
+                    const path = retentionCurve.map((point, index) => `${index === 0 ? "M" : "L"}${58 + index * 118},${171 - Number((point as any)[game]) * 1.34}`).join(" ");
+                    return <path key={game} d={path} fill="none" stroke={color} strokeWidth={game === "메이플스토리M" ? 3 : 2.2} />;
+                  })}
+                  {retentionCurve.map((point, index) => <text key={point.stage} x={54 + index * 118} y="191" textAnchor="middle" fill="#86808A" fontSize="11">{point.stage}</text>)}
+                </svg>
+              </div>
+              <div className="retention-legend"><span className="maple">메이플M 4.3%</span><span className="bdm">검은사막M 4.5%</span><span className="mab">마비노기M 34.3%</span><span className="aion">아이온2 18.6%</span></div>
+            </div>
+          </div>
+          <div className="store-card">
+            <div><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>
+            <div className="store-table"><span>게임</span><span>GP 평점</span><span>GP 리뷰 수</span><span>앱스토어 평점</span><span>앱스토어 리뷰 수</span><b className="maple">메이플스토리M</b><b className="maple">4.6</b><b className="maple">18.8만</b><b className="maple">4.4</b><b className="maple">13.0만</b><b>검은사막 모바일</b><b>4.4</b><b>21.6만</b><b>4.2</b><b>6.0만</b><b>마비노기 모바일</b><b>2.8</b><b>3.6만</b><b>3.3</b><b>0.83만</b><b>아이온2</b><b>2.9</b><b>0.7만</b><b>3.1</b><b>0.19만</b></div>
+          </div>
+        </section>
+      )}
+
+      {active === "strategy" && (
+        <section className="stage-section strategy-section">
+          <div className="section-title-row">
+            <div><SectionEyebrow index="04" label="STRATEGY QUEST" /><h2>4개 퀘스트로 공백기 리스크를 분산한다</h2><p>우선순위와 리소스 제약을 함께 고려해 네 개의 실행 축을 단계적으로 추진합니다.</p></div>
+            <div className="section-flag"><Target size={17} /><span>ACTION SYSTEM</span></div>
+          </div>
+          <div className="strategy-layout">
+            <div className="quest-card-list">
+              {strategyQuests.map((quest) => <button key={quest.id} onClick={() => setActiveQuest(quest.id)} className={`quest-card ${quest.color} ${currentQuest.id === quest.id ? "selected" : ""}`}><span>{quest.index}</span><b>{quest.title}</b><small>{quest.horizon}</small><ArrowUpRight size={15} /></button>)}
+            </div>
+            <div className={`quest-detail ${currentQuest.color}`}>
+              <div className="quest-detail-top"><span>{currentQuest.index}</span><b>{currentQuest.horizon}</b></div>
+              <h3>{currentQuest.title}</h3>
+              <p className="quest-why"><strong>WHY</strong>{currentQuest.why}</p>
+              <div className="quest-detail-columns"><div><span>HOW</span><ol>{currentQuest.how.map((item) => <li key={item}>{item}</li>)}</ol></div><div><span>RISK</span><p>{currentQuest.risk}</p></div><div><span>KPI</span>{currentQuest.kpi.map((item) => <b className="kpi-tag" key={item}>{item}</b>)}</div></div>
+            </div>
+          </div>
+          <div className="roadmap-card">
+            <div className="roadmap-head"><span className="eyebrow">EXECUTION ROADMAP</span><h3>단기부터 중장기까지, 실행 리스크를 분산합니다.</h3></div>
+            <div className="roadmap-line"><div className="roadmap-step blue"><i>1</i><b>단기 · 1개월</b><span>커뮤니티 모니터링 · 이벤트 캘린더 트래킹</span></div><div className="roadmap-step gold"><i>2</i><b>중기 · 1분기</b><span>타이밍 관리 체계 · 콜라보 후보 롱리스트</span></div><div className="roadmap-step purple"><i>3</i><b>장기 · 반기</b><span>상시복귀지원 · IP 콜라보 1건 이상</span></div><div className="roadmap-step green"><i>4</i><b>중장기 · 1년+</b><span>시스템 리마스터 로드맵 착수</span></div></div>
+          </div>
+          <div className="risk-bar"><AlertTriangle size={16} /><b>RISK MANAGEMENT</b><span>4개 전략 동시 착수 시 리소스가 분산될 수 있습니다. 제안 KPI는 다수가 상관관계 지표이므로 매출·DAU 등 직접 지표는 별도 검증이 필요합니다.</span></div>
+        </section>
+      )}
+
+      {active === "clear" && (
+        <section className="stage-section clear-section">
+          <img className="clear-bg" src="/manus-storage/marketing-quest-clear_bba3a96d.png" alt="" aria-hidden="true" />
+          <img className="clear-star" src="/manus-storage/fantasy_ornament_star_ffc3f9b9.png" alt="" aria-hidden="true" />
+          <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="05" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>이벤트 연동 변동성과 유저 반응, 리텐션 후킹 비교를 종합한 실행 우선순위입니다.</p></div>
+          <div className="clear-grid">
+            {["시즌 단위 정례 업데이트 체계 도입", "이벤트 공백기 최소화", "경쟁사 이벤트 캘린더 선제 모니터링", "IP 콜라보형 채널 신설 검토", "상시복귀지원 도입 검토", "강점 자산(성장지원형 · 평점 신뢰도) 강화"].map((item, index) => <div className="clear-item" key={item}><span>{index + 1}</span><b>{item}</b></div>)}
+            <div className="clear-item final"><span>7</span><b>검색 관심 · 복귀 니즈 반등 신호를 지속 모니터링</b></div>
+          </div>
+          <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>경쟁사 반응을 쫓는 것이 아니라, 메이플M의 성장지원·신뢰 자산 위에서 <em>정례성 있는 복귀 경험</em>을 설계한다.</span></div><button onClick={() => setActive("home")}>MISSION BRIEFING으로 <ArrowUpRight size={15} /></button></div>
+        </section>
+      )}
+    </QuestChrome>
   );
 }
