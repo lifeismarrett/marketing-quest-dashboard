@@ -14,8 +14,9 @@
 |---|---|
 | Live Dashboard | [mktquestdash-kfhuh6sd.manus.space](https://mktquestdash-kfhuh6sd.manus.space/) |
 | Presentation | [`presentation/`](./presentation/) |
+| Presentation Script | [`presentation/01_마케팅퀘스트_발표대본_최종본.pdf`](./presentation/01_마케팅퀘스트_발표대본_최종본.pdf) |
 | Executive Brief | [`presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf`](./presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf) |
-| Q&A Defense Book | [`presentation/README.md`](./presentation/README.md) — 현재 PDF는 MISSING FILE |
+| Q&A Defense Book | [`presentation/03_마케팅퀘스트_질의응답_대응자료_최종본.pdf`](./presentation/03_마케팅퀘스트_질의응답_대응자료_최종본.pdf) |
 | Research | [`research/`](./research/) |
 | Data Validation | [`research/datalab/`](./research/datalab/) |
 | Project Documentation | [`docs/`](./docs/) |
