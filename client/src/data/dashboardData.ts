@@ -1268,20 +1268,6 @@ export const verifiedEvents = [
     "source": "https://maplestorym.nexon.com/event/2025/1105_showcase"
   },
   {
-    "id": "MSM-004",
-    "game": "메이플스토리 M",
-    "date": "2025-12-18T00:00:00",
-    "endDate": null,
-    "name": "신규 캐릭터 칼리 업데이트",
-    "type": "New Class/Character",
-    "major": true,
-    "collaboration": false,
-    "growth": true,
-    "reactivation": false,
-    "grade": "B",
-    "source": "https://maplestorym.nexon.com/1198/board/1215/view/3312710"
-  },
-  {
     "id": "MSM-005",
     "game": "메이플스토리 M",
     "date": "2026-01-15T00:00:00",
@@ -1929,15 +1915,6 @@ export const verifiedEvents = [
 
 export const battleCases = [
   {
-    "id": "case-bdm-khali",
-    "opponent": "검은사막 모바일",
-    "date": "2025-12-16~18",
-    "mapleEvent": "신규 캐릭터 칼리 출시",
-    "opponentEvent": "세라핌 출시",
-    "outcome": "보합",
-    "detail": "메이플M 44→22위, 검은사막 모바일 131→131위. 같은 시기 변화를 확인한 결과이며 직접 인과로 단정하지 않음."
-  },
-  {
     "id": "case-aion-reboost",
     "opponent": "아이온2",
     "date": "2026-07-16~31",
@@ -1945,15 +1922,6 @@ export const battleCases = [
     "opponentEvent": "동일 기간 대형 자사 이벤트 미표기",
     "outcome": "상극",
     "detail": "이용자수 순위에서 메이플M 69→33위, 아이온2 77→86위. 타이밍 정렬에 따른 연관 움직임으로 해석."
-  },
-  {
-    "id": "case-mabm-collab",
-    "opponent": "마비노기 모바일",
-    "date": "2025-12-18",
-    "mapleEvent": "신규 캐릭터 칼리 출시",
-    "opponentEvent": "산리오 협업 포함 대형 업데이트",
-    "outcome": "상극",
-    "detail": "동일 시기 콜라보 화제성 격차를 확인한 사례. 유저 이동의 직접 인과는 확인하지 않음."
   }
 ] as const;
 

@@ -9,6 +9,7 @@ import { AlertTriangle, ArrowUpRight, CalendarDays, Check, CircleDot, Compass, E
 import { QuestChrome, type QuestSection } from "@/components/QuestChrome";
 import { RankTrendChart, SearchInterestChart, type GameName, type RankMetric } from "@/components/QuestCharts";
 import { battleCases, verifiedEvents } from "@/data/dashboardData";
+import { evidenceMeta, funnelStages, monetizationRows, type EvidenceStatus } from "@/data/monetizationData";
 
 const sections: QuestSection[] = ["home", "performance", "battle", "retention", "monetization", "strategy", "clear"];
 const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
@@ -38,7 +39,7 @@ const notes: Record<QuestSection, string[]> = {
 
 const retentionRows = [
   ["성장지원형", "하이퍼버닝", "—", "레벨 85 → 100", "—"],
-  ["콘텐츠추가형", "칼리 · 렌 등", "세라핌 등", "기사 등", "권성 등"],
+  ["콘텐츠추가형", "렌 등", "세라핌 등", "기사 등", "권성 등"],
   ["IP 콜라보형", "—", "붉은사막 (자사)", "산리오", "프로미스나인"],
   ["상시복귀지원형", "—", "—", "—", "새싹뱃지 (28일 미접속 보상)"],
 ];
@@ -74,6 +75,10 @@ function MetricPill({ label, value, detail, tone = "gold" }: { label: string; va
 
 function MiniLine({ label, children, tone = "gold" }: { label: string; children: React.ReactNode; tone?: string }) {
   return <div className={`mini-line ${tone}`}><span>{label}</span><strong>{children}</strong></div>;
+}
+
+function EvidenceBadge({ status }: { status: EvidenceStatus }) {
+  return <span className={`evidence-badge ${status}`}>[{evidenceMeta[status].label}]</span>;
 }
 
 function sectionFromQuery(): QuestSection {
@@ -173,7 +178,7 @@ export default function Home() {
             <div className="section-flag"><TrendingUp size={17} /><span>RE:BOOST SIGNAL</span></div>
           </div>
           <div className="control-row">
-            <Tabs value={performanceMetric} onValueChange={(value) => setPerformanceMetric(value as typeof performanceMetric)}>
+            <Tabs value={performanceMetric} onValueChange={(value) => { const nextMetric = value as typeof performanceMetric; setPerformanceMetric(nextMetric); if (nextMetric === "search") setPerformanceGame("ALL"); }}>
               <TabsList className="quest-tabs">
                 <TabsTrigger value="revenue">매출 순위</TabsTrigger>
                 <TabsTrigger value="users">이용자수 순위</TabsTrigger>
@@ -181,7 +186,8 @@ export default function Home() {
               </TabsList>
             </Tabs>
             <div className="game-filter" aria-label="게임 필터">
-              {games.map((game) => <button key={game} className={performanceGame === game ? "selected" : ""} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
+              {games.map((game) => <button key={game} disabled={performanceMetric === "search"} className={`${performanceGame === game ? "selected" : ""} ${performanceMetric === "search" ? "is-disabled" : ""}`} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
+              {performanceMetric === "search" && <span className="filter-context">검색 관심: 메이플M·아이온2 비교</span>}
             </div>
           </div>
           <div className="performance-grid">
@@ -191,6 +197,7 @@ export default function Home() {
             <aside className="performance-insights">
               <div className="impact-card">
                 <span className="eyebrow">{primaryEvidence.label}</span>
+                {performanceGame !== "ALL" && performanceGame !== "메이플스토리M" && <span className="impact-context">메이플M 기준 KPI</span>}
                 <div className={`impact-number ${performanceMetric === "search" ? "search-signal" : ""}`}><b>{primaryEvidence.before}</b>{primaryEvidence.after && <><ArrowUpRight size={25} /><b>{primaryEvidence.after}</b><small>{primaryEvidence.suffix}</small></>}</div>
                 <p>{primaryEvidence.detail}</p>
                 <div className="impact-foot">{primaryEvidence.foot}</div>
@@ -239,7 +246,7 @@ export default function Home() {
                   onFocus={() => comparisonCase && setActiveCase(comparisonCase.id)}
                 >
                   <header className="comparison-card-head"><span>{comparison.title}</span><small>{comparison.id === "all" ? "4 GAMES" : "1:1 MATCH"}</small></header>
-                  <RankTrendChart metric={battleMetric} games={comparison.games} compact showReboost={comparison.showReboost} chartHeight={174} />
+                  <RankTrendChart metric={battleMetric} games={comparison.games} compact showReboost={comparison.showReboost} chartHeight={188} />
                 </article>
               );
             })}
@@ -247,7 +254,7 @@ export default function Home() {
           <section className={`case-brief ${eventOnly ? "event-only" : ""}`} aria-label="이벤트 사례 브리프">
             <div className="case-brief-head"><span>EVENT CASE BRIEF</span><b>{eventOnly ? "이벤트 사례 집중" : "동반 / 상극"}</b></div>
             <div className="case-brief-list">
-              {battleCases.map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small>{item.mapleEvent}</small></button>)}
+              {battleCases.map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small><i>메이플M</i>{item.mapleEvent}</small></button>)}
             </div>
             <div className="case-brief-detail"><span className={`outcome-badge ${selectedCase.outcome}`}>{selectedCase.outcome}</span><b>{selectedCase.mapleEvent}</b><i>MAPLE M ↔ {selectedCase.opponentEvent}</i><p>{selectedCase.detail}</p></div>
             {eventOnly && <div className="case-event-strip">{nearbyEvents.slice(-5).map((event) => <span key={event.id}><b>{event.date?.slice(5, 10)}</b>{event.name}</span>)}</div>}
@@ -291,7 +298,7 @@ export default function Home() {
             </div>
           </div>
           <div className="store-card">
-            <div><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>
+            <div className="store-summary"><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>
             <div className="store-table"><span>게임</span><span>GP 평점</span><span>GP 리뷰 수</span><span>앱스토어 평점</span><span>앱스토어 리뷰 수</span><b className="maple">메이플스토리M</b><b className="maple">4.6</b><b className="maple">18.8만</b><b className="maple">4.4</b><b className="maple">13.0만</b><b>검은사막 모바일</b><b>4.4</b><b>21.6만</b><b>4.2</b><b>6.0만</b><b>마비노기 모바일</b><b>2.8</b><b>3.6만</b><b>3.3</b><b>0.83만</b><b>아이온2</b><b>2.9</b><b>0.7만</b><b>3.1</b><b>0.19만</b></div>
           </div>
         </section>
@@ -300,32 +307,37 @@ export default function Home() {
       {active === "monetization" && (
         <section className="stage-section monetization-section">
           <div className="section-title-row">
-            <div><SectionEyebrow index="04" label="MONETIZATION FUNNEL" /><h2>매출 성장 기회는 결제 전환의 흐름에서 찾습니다</h2><p>BM Wide Research 입력 전, MMORPG의 첫 결제·반복 결제·고가치 결제 분석 프레임을 먼저 고정합니다.</p></div>
-            <div className="section-flag"><CircleDot size={17} /><span>PHASE 1 · RESEARCH FRAME</span></div>
+            <div><SectionEyebrow index="04" label="MONETIZATION FUNNEL" /><h2>공개 BM 구조로 벤치마킹 후보를 정리합니다</h2><p>공식 상점·공지만으로 확인 가능한 상품 구조를 비교합니다. 시장 반응은 관측 신호이며 결제 성과의 직접 증거가 아닙니다.</p></div>
+            <div className="section-flag"><CircleDot size={17} /><span>PUBLIC EVIDENCE FRAME</span></div>
+          </div>
+          <div className="evidence-legend" aria-label="BM 증거 상태 기준">
+            {(Object.keys(evidenceMeta) as EvidenceStatus[]).map((status) => <span key={status}><EvidenceBadge status={status} /> {evidenceMeta[status].detail}</span>)}
           </div>
           <div className="monetization-layout">
             <section className="funnel-card" aria-label="MMORPG 매출 퍼널 분석 프레임">
-              <div className="funnel-card-head"><div><span className="eyebrow">MMORPG REVENUE FUNNEL</span><h3>결제 기회를 읽는 3단계</h3></div><span className="research-state">BM 추가 조사 필요</span></div>
+              <div className="funnel-card-head"><div><span className="eyebrow">MMORPG REVENUE FUNNEL</span><h3>공개 관측이 가능한 3단계</h3></div><EvidenceBadge status="confirmed" /></div>
               <div className="funnel-flow">
-                <article className="funnel-stage first"><span>01</span><h4>첫 결제</h4><p>초기 진입 상품 · 가치 인식 · 첫 전환 계기</p><small>검증 예정: 진입 경로와 상품 구조</small></article>
-                <article className="funnel-stage repeat"><span>02</span><h4>반복 결제</h4><p>시즌 운영 · 패스 · 소모 주기 · 재방문 동기</p><small>검증 예정: 결제 반복성과 유지 요인</small></article>
-                <article className="funnel-stage high"><span>03</span><h4>고가치 결제</h4><p>상위 패키지 · 수집 욕구 · 장기 가치 제안</p><small>검증 예정: 고가치 동인과 상품군</small></article>
+                {funnelStages.map((stage) => <article className={`funnel-stage ${stage.id}`} key={stage.id}><span>{stage.index}</span><h4>{stage.title}</h4><p>{stage.detail}</p><ul>{stage.mechanisms.map((mechanism) => <li key={mechanism}>{mechanism}</li>)}</ul></article>)}
               </div>
-              <div className="funnel-research-line"><b>분석 순서</b><span>상품 구조 → 결제 유도 UX → 반복 주기 → 고가치 전환 근거</span></div>
+              <div className="funnel-research-line"><b>해석 원칙</b><span>상품 존재와 시장 반응의 동시 관측은 직접 매출 효과나 인과를 의미하지 않습니다.</span></div>
             </section>
             <aside className="monetization-side">
               <section className="bm-map-card" aria-label="BM 및 수익화 맵 분석 프레임">
-                <span className="eyebrow">BM / MONETIZATION MAP</span><h3>Wide Research에서 채울 핵심 축</h3>
-                <div className="bm-map-grid"><span>상품 구조</span><span>가격 · 가치</span><span>반복 결제 주기</span><span>고가치 결제 동인</span></div>
+                <span className="eyebrow">MARKET RESPONSE SIGNALS</span><h3>보조 신호로만 해석</h3>
+                <p>순위·검색 관심·평점·이벤트는 <EvidenceBadge status="observed" /> 신호입니다. 상품 구조의 성과나 인과를 단정하지 않습니다.</p>
               </section>
               <section className="aion-research-card" aria-label="아이온2 수익화 조사 프레임">
-                <span className="eyebrow">AION2 MONETIZATION RESEARCH FRAME</span><h3>비교 조사 우선순위</h3>
-                <p>첫 결제, 반복 결제, 고가치 결제의 <b>진입 구조와 가치 제안</b>을 동일한 기준으로 검증합니다.</p>
-                <div><span>첫 결제</span><span>반복 결제</span><span>고가치 결제</span></div>
+                <span className="eyebrow">AION2 PRIORITY RESEARCH</span><h3>공개 구조와 비공개 성과를 분리</h3>
+                <p>멤버십·데바 패스의 판매 구조는 <EvidenceBadge status="confirmed" />이며, 결제 전환·반복 구매율·고가치 결제 비중은 <EvidenceBadge status="private" />입니다.</p>
+                <div><span>멤버십·구독</span><span>첫 결제 구조</span><span>반복 구매 구조</span></div>
               </section>
             </aside>
           </div>
-          <div className="monetization-note"><AlertTriangle size={16} /><div><b>PHASE 2 WIDE RESEARCH 입력 대기</b><span>상품·가격·결제 전환·반복 결제·고가치 결제 관련 수치와 사례는 검증된 조사 데이터가 확보된 뒤에만 표시합니다.</span></div></div>
+          <section className="monetization-map" aria-label="4개 게임 BM 및 수익화 비교 맵">
+            <div className="monetization-map-head"><div><span className="eyebrow">BM / MONETIZATION MAP</span><h3>4개 게임 공개 구조 비교</h3></div><span>공개 가격·구매 제한은 해당 공식 페이지·공지 시점 기준</span></div>
+            <div className="monetization-table-wrap"><table className="monetization-table"><thead><tr><th>게임</th><th>BM 유형</th><th>상품/제도</th><th>공개 가격</th><th>구매 제한</th><th>타깃 유저</th><th>퍼널 역할</th><th>근거 · 상태</th></tr></thead><tbody>{monetizationRows.map((row) => <tr key={row.game}><th scope="row">{row.game}</th><td>{row.type}</td><td>{row.product}</td><td>{row.price}</td><td>{row.limit}</td><td>{row.target}</td><td>{row.role}</td><td><a href={row.sourceUrl} target="_blank" rel="noreferrer">{row.sourceLabel} <ExternalLink size={10} /></a><EvidenceBadge status={row.status} /></td></tr>)}</tbody></table></div>
+          </section>
+          <div className="monetization-note"><AlertTriangle size={16} /><div><b><EvidenceBadge status="private" /> 직접 성과 지표</b><span>정확 매출, 구매자 수, 전환·반복 구매율, 고가치 결제 비중, ARPU·ARPPU·LTV 및 상품별 매출 기여도는 공개 확인 불가입니다.</span></div></div>
         </section>
       )}
 
@@ -358,12 +370,12 @@ export default function Home() {
         <section className="stage-section clear-section">
           <img className="clear-bg" src="/manus-storage/marketing-quest-clear_bba3a96d.png" alt="" aria-hidden="true" />
           <img className="clear-star" src="/manus-storage/fantasy_ornament_star_ffc3f9b9.png" alt="" aria-hidden="true" />
-          <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="06" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>이벤트 연동 변동성과 유저 반응, 리텐션 후킹 비교를 종합한 실행 우선순위입니다.</p></div>
+          <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="06" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>공개 BM 구조 기준 벤치마킹 후보와 시장 반응의 동시 관측 신호, 리텐션 후킹 비교를 구분한 실행 우선순위입니다.</p></div>
           <div className="clear-grid">
             {["시즌 단위 정례 업데이트 체계 도입", "이벤트 공백기 최소화", "경쟁사 이벤트 캘린더 선제 모니터링", "IP 콜라보형 채널 신설 검토", "상시복귀지원 도입 검토", "강점 자산(성장지원형 · 평점 신뢰도) 강화"].map((item, index) => <div className="clear-item" key={item}><span>{index + 1}</span><b>{item}</b></div>)}
             <div className="clear-item final"><span>7</span><b>검색 관심 · 복귀 니즈 반등 신호를 지속 모니터링</b></div>
           </div>
-          <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>경쟁사 반응을 쫓는 것이 아니라, 메이플M의 성장지원·신뢰 자산 위에서 <em>정례성 있는 복귀 경험</em>을 설계한다.</span></div><button onClick={() => setActive("home")}>QUEST COMPLETE <ArrowUpRight size={15} /></button></div>
+          <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>공개 BM 구조와 시장 반응의 <em>동시 관측 신호</em>를 벤치마킹 후보로 삼되, 내부 결제 데이터 확인 후 최종 검증한다.</span></div><button onClick={() => setActive("home")}>QUEST COMPLETE <ArrowUpRight size={15} /></button></div>
         </section>
       )}
     </QuestChrome>

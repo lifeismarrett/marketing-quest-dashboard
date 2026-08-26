@@ -13,6 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useEffect, useRef, useState } from "react";
 import { naverInterest, rankTimeline, sourceNotes } from "@/data/dashboardData";
 
 export type RankMetric = "revenue" | "users";
@@ -81,6 +82,19 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
     date: row.date,
     ...((row as any)[key]),
   }));
+  const layoutSignature = `${metric}-${game}-${selectedGames.join("|")}-${compact}`;
+  const chartHostRef = useRef<HTMLDivElement>(null);
+  const [chartWidth, setChartWidth] = useState(0);
+
+  useEffect(() => {
+    const host = chartHostRef.current;
+    if (!host) return;
+    const updateWidth = () => setChartWidth(Math.max(0, Math.floor(host.getBoundingClientRect().width)));
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, [layoutSignature]);
   const noData = metric === "users" && game === "검은사막 모바일";
 
   if (noData) {
@@ -101,8 +115,8 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
         </div>
         <span className="rank-rule">↓ 낮을수록 상위</span>
       </div>
-      <ResponsiveContainer width="100%" height={chartHeight ?? (compact ? 222 : 300)}>
-        <LineChart data={data} margin={{ top: 14, right: 14, bottom: compact ? 16 : 3, left: 0 }}>
+      <div ref={chartHostRef} className="rank-chart-host" style={{ height: chartHeight ?? (compact ? 222 : 300) }}>
+        {chartWidth > 0 && <LineChart width={chartWidth} height={chartHeight ?? (compact ? 222 : 300)} data={data} margin={{ top: 14, right: 14, bottom: compact ? 22 : 3, left: 0 }}>
           <CartesianGrid stroke="#E6E0D4" vertical={false} />
           <XAxis dataKey="date" tickFormatter={formatShortDate} minTickGap={28} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <YAxis type="number" reversed domain={axis.domain} ticks={axis.ticks} allowDataOverflow axisLine={false} tickLine={false} width={42} tick={{ fill: "#7D7780", fontSize: 11 }} />
@@ -118,12 +132,13 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
               strokeWidth={item === "메이플스토리M" ? 3.25 : 2}
               dot={false}
               activeDot={{ r: 5, strokeWidth: 3 }}
+              isAnimationActive={false}
               connectNulls={false}
             />
           ))}
           {!compact && <Legend formatter={(value) => GAME_LABELS[value] ?? value} wrapperStyle={{ fontSize: 11, paddingTop: 10 }} />}
-        </LineChart>
-      </ResponsiveContainer>
+        </LineChart>}
+      </div>
       {compact && (
         <div className="compact-chart-legend" aria-label="그래프 범례">
           {selectedGames.map((item) => <span key={item} style={{ "--legend-color": GAME_COLORS[item] } as React.CSSProperties}>{GAME_LABELS[item]}</span>)}
@@ -162,8 +177,8 @@ export function SearchInterestChart() {
           <XAxis dataKey="date" tickFormatter={(value) => value.slice(2, 7)} minTickGap={26} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <YAxis axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <Tooltip content={<SearchTooltip />} />
-          <Line type="monotone" dataKey="메이플스토리M" stroke="#F39C27" strokeWidth={3.2} dot={false} activeDot={{ r: 4 }} />
-          <Line type="monotone" dataKey="아이온2" stroke="#4A97D1" strokeWidth={2.1} dot={false} activeDot={{ r: 4 }} />
+          <Line type="monotone" dataKey="메이플스토리M" stroke="#F39C27" strokeWidth={3.2} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
+          <Line type="monotone" dataKey="아이온2" stroke="#4A97D1" strokeWidth={2.1} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
           <Legend wrapperStyle={{ fontSize: 11, paddingTop: 10 }} />
         </LineChart>
       </ResponsiveContainer>

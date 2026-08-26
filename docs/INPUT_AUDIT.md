@@ -41,7 +41,7 @@ Black Desert Mobile user-rank coverage is known to be incomplete in the final pr
 | Hooking type | MapleStory M | Black Desert Mobile | Mabinogi Mobile | AION2 |
 |---|---|---|---|---|
 | 성장지원형 | 하이퍼버닝 | — | 레벨 85 → 100 | — |
-| 콘텐츠추가형 | 칼리·렌 등 | 세라핌 등 | 기사 등 | 권성 등 |
+| 콘텐츠추가형 | 렌 등 | 세라핌 등 | 기사 등 | 권성 등 |
 | IP 콜라보형 | — | 붉은사막(자사) | 산리오 | 프로미스나인 |
 | 상시복귀지원형 | — | — | — | 새싹뱃지(28일 미접속 보상) |
 
