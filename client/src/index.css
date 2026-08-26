@@ -225,13 +225,25 @@ button:focus-visible { outline: 3px solid rgba(243, 181, 66, .6); outline-offset
 @media (max-width: 860px) { .battle-board { grid-template-columns: 1fr; padding-left: 18px; padding-right: 18px; }.battle-chart-card.comparison-card { min-height: 210px; }.case-brief { grid-template-columns: 1fr; margin-left: 18px; margin-right: 18px; }.case-brief-head { padding-right: 0; padding-bottom: 6px; border-right: 0; border-bottom: 1px solid #e5ddd1; }.case-brief-list { display: grid; grid-template-columns: repeat(3, 1fr); }.case-brief-detail { flex-wrap: wrap; }.battle-controls { align-items: flex-start; flex-direction: column; } }
 /* Retention alignment cleanup: one shared grid boundary, one gap, and consistent border-box card edges. */
 .retention-section { --retention-inline: 30px; --retention-gap: 12px; --retention-card-padding: 16px; }
-.retention-grid { width: calc(100% - (var(--retention-inline) * 2)); margin: 0 var(--retention-inline) var(--retention-gap); padding: 0; gap: var(--retention-gap); grid-template-columns: minmax(0, 1.45fr) minmax(230px, .63fr); grid-template-rows: minmax(0, 1fr) 185px; box-sizing: border-box; }
+.retention-grid { width: calc(100% - (var(--retention-inline) * 2)); margin: 0 var(--retention-inline) var(--retention-gap); padding: 0; gap: var(--retention-gap); grid-template-columns: minmax(0, 1.45fr) minmax(230px, .63fr); grid-template-rows: minmax(152px, 1fr) 198px; box-sizing: border-box; }
 .retention-grid > *, .store-card { box-sizing: border-box; }
 .hooking-card { grid-row: 1 / span 2; min-width: 0; }
 .retention-side { align-self: stretch; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: var(--retention-gap); min-width: 0; }
 .retention-chart-card { min-width: 0; height: 100%; }
 .store-card { width: calc(100% - (var(--retention-inline) * 2)); min-width: 0; margin: 0 var(--retention-inline) 22px; padding: var(--retention-card-padding); gap: 22px; align-items: center; }
 .store-card > * { min-width: 0; }
-@media (max-width: 1150px) { .retention-section { --retention-inline: 22px; } }
+.retention-chart-card { display: flex; flex-direction: column; padding: 14px 17px; }
+.retention-svg-wrap { flex: 1; min-height: 0; height: auto; margin-top: 7px; }
+.retention-legend { position: static; left: auto; right: auto; bottom: auto; gap: 8px; margin: 6px 0 0; font-size: 9px; }
+.retention-legend span::before { width: 8px; height: 8px; margin-right: 5px; }
+.store-card { grid-template-columns: minmax(0, .65fr) minmax(0, 1.15fr); }
+.case-brief { grid-template-columns: 128px minmax(0, 1.1fr) minmax(245px, .85fr); min-height: 66px; gap: 8px; }
+.case-brief-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.case-brief-list button { min-height: 44px; }
+.case-brief-list button small { overflow: visible; white-space: normal; text-overflow: clip; line-height: 1.2; }
+.case-brief-detail { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 3px 7px; }
+.case-brief-detail > b { overflow: visible; white-space: normal; text-overflow: clip; }
+.case-brief-detail i { grid-column: 2; min-width: 0; white-space: normal; line-height: 1.25; }
+@media (max-width: 1150px) { .retention-section { --retention-inline: 22px; }.retention-side .collab-gap-card, .retention-side .return-card { padding: 10px 16px; }.retention-side .collab-gap-card h3, .retention-side .return-card h3 { margin: 4px 0 0; } }
 @media (max-width: 860px) { .retention-section { --retention-inline: 18px; }.retention-grid { width: calc(100% - (var(--retention-inline) * 2)); margin: 0 var(--retention-inline) var(--retention-gap); }.store-card { width: calc(100% - (var(--retention-inline) * 2)); margin-left: var(--retention-inline); margin-right: var(--retention-inline); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; } }

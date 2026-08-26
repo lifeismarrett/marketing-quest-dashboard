@@ -317,7 +317,7 @@ export default function Home() {
             {["시즌 단위 정례 업데이트 체계 도입", "이벤트 공백기 최소화", "경쟁사 이벤트 캘린더 선제 모니터링", "IP 콜라보형 채널 신설 검토", "상시복귀지원 도입 검토", "강점 자산(성장지원형 · 평점 신뢰도) 강화"].map((item, index) => <div className="clear-item" key={item}><span>{index + 1}</span><b>{item}</b></div>)}
             <div className="clear-item final"><span>7</span><b>검색 관심 · 복귀 니즈 반등 신호를 지속 모니터링</b></div>
           </div>
-          <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>경쟁사 반응을 쫓는 것이 아니라, 메이플M의 성장지원·신뢰 자산 위에서 <em>정례성 있는 복귀 경험</em>을 설계한다.</span></div><button onClick={() => setActive("home")}>MISSION BRIEFING으로 <ArrowUpRight size={15} /></button></div>
+          <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>경쟁사 반응을 쫓는 것이 아니라, 메이플M의 성장지원·신뢰 자산 위에서 <em>정례성 있는 복귀 경험</em>을 설계한다.</span></div><button onClick={() => setActive("home")}>QUEST COMPLETE <ArrowUpRight size={15} /></button></div>
         </section>
       )}
     </QuestChrome>
