@@ -10,7 +10,7 @@ import { QuestChrome, type QuestSection } from "@/components/QuestChrome";
 import { RankTrendChart, SearchInterestChart, type GameName, type RankMetric } from "@/components/QuestCharts";
 import { battleCases, verifiedEvents } from "@/data/dashboardData";
 
-const sections: QuestSection[] = ["home", "performance", "battle", "retention", "strategy", "clear"];
+const sections: QuestSection[] = ["home", "performance", "battle", "retention", "monetization", "strategy", "clear"];
 const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
 
 const battleComparisons: Array<{
@@ -31,6 +31,7 @@ const notes: Record<QuestSection, string[]> = {
   performance: ["순위 축은 역방향입니다. 선이 위로 갈수록 더 좋은 순위입니다.", "RE:BOOST 구간의 동시 반등은 타이밍 정렬이며, 직접 인과로 표현하지 않습니다."],
   battle: ["상대 탭을 바꾸면 검증된 이벤트 타이밍과 순위 움직임을 같이 볼 수 있습니다.", "동반·상극은 사건의 결과가 아니라 관측된 연관 움직임입니다."],
   retention: ["성장지원과 콘텐츠추가는 메이플M의 강점, IP 콜라보와 상시복귀지원은 공백으로 연결됩니다.", "잔존율은 검색 관심의 상대적 프록시이며 이용자 리텐션 자체가 아닙니다."],
+  monetization: ["PHASE 1은 매출 성장 기회를 읽기 위한 분석 프레임만 고정합니다.", "상품·가격·전환율·반복 결제·고가치 결제 데이터는 Wide Research 검증 후에만 채웁니다."],
   strategy: ["네 개 퀘스트는 동시에 밀어붙이지 않고 리소스 제약 아래 단계화합니다.", "각 퀘스트의 KPI는 인과가 아닌 관리·검증 지표임을 강조합니다."],
   clear: ["마지막 메시지는 단일 이벤트의 성공이 아니라, 정례 업데이트와 공백 최소화 체계입니다.", "성장지원형 자산과 높은 평점 신뢰도를 다음 실행의 기반으로 사용합니다."],
 };
@@ -296,10 +297,42 @@ export default function Home() {
         </section>
       )}
 
+      {active === "monetization" && (
+        <section className="stage-section monetization-section">
+          <div className="section-title-row">
+            <div><SectionEyebrow index="04" label="MONETIZATION FUNNEL" /><h2>매출 성장 기회는 결제 전환의 흐름에서 찾습니다</h2><p>BM Wide Research 입력 전, MMORPG의 첫 결제·반복 결제·고가치 결제 분석 프레임을 먼저 고정합니다.</p></div>
+            <div className="section-flag"><CircleDot size={17} /><span>PHASE 1 · RESEARCH FRAME</span></div>
+          </div>
+          <div className="monetization-layout">
+            <section className="funnel-card" aria-label="MMORPG 매출 퍼널 분석 프레임">
+              <div className="funnel-card-head"><div><span className="eyebrow">MMORPG REVENUE FUNNEL</span><h3>결제 기회를 읽는 3단계</h3></div><span className="research-state">BM 추가 조사 필요</span></div>
+              <div className="funnel-flow">
+                <article className="funnel-stage first"><span>01</span><h4>첫 결제</h4><p>초기 진입 상품 · 가치 인식 · 첫 전환 계기</p><small>검증 예정: 진입 경로와 상품 구조</small></article>
+                <article className="funnel-stage repeat"><span>02</span><h4>반복 결제</h4><p>시즌 운영 · 패스 · 소모 주기 · 재방문 동기</p><small>검증 예정: 결제 반복성과 유지 요인</small></article>
+                <article className="funnel-stage high"><span>03</span><h4>고가치 결제</h4><p>상위 패키지 · 수집 욕구 · 장기 가치 제안</p><small>검증 예정: 고가치 동인과 상품군</small></article>
+              </div>
+              <div className="funnel-research-line"><b>분석 순서</b><span>상품 구조 → 결제 유도 UX → 반복 주기 → 고가치 전환 근거</span></div>
+            </section>
+            <aside className="monetization-side">
+              <section className="bm-map-card" aria-label="BM 및 수익화 맵 분석 프레임">
+                <span className="eyebrow">BM / MONETIZATION MAP</span><h3>Wide Research에서 채울 핵심 축</h3>
+                <div className="bm-map-grid"><span>상품 구조</span><span>가격 · 가치</span><span>반복 결제 주기</span><span>고가치 결제 동인</span></div>
+              </section>
+              <section className="aion-research-card" aria-label="아이온2 수익화 조사 프레임">
+                <span className="eyebrow">AION2 MONETIZATION RESEARCH FRAME</span><h3>비교 조사 우선순위</h3>
+                <p>첫 결제, 반복 결제, 고가치 결제의 <b>진입 구조와 가치 제안</b>을 동일한 기준으로 검증합니다.</p>
+                <div><span>첫 결제</span><span>반복 결제</span><span>고가치 결제</span></div>
+              </section>
+            </aside>
+          </div>
+          <div className="monetization-note"><AlertTriangle size={16} /><div><b>PHASE 2 WIDE RESEARCH 입력 대기</b><span>상품·가격·결제 전환·반복 결제·고가치 결제 관련 수치와 사례는 검증된 조사 데이터가 확보된 뒤에만 표시합니다.</span></div></div>
+        </section>
+      )}
+
       {active === "strategy" && (
         <section className="stage-section strategy-section">
           <div className="section-title-row">
-            <div><SectionEyebrow index="04" label="STRATEGY QUEST" /><h2>4개 퀘스트로 공백기 리스크를 분산한다</h2><p>우선순위와 리소스 제약을 함께 고려해 네 개의 실행 축을 단계적으로 추진합니다.</p></div>
+            <div><SectionEyebrow index="05" label="STRATEGY QUEST" /><h2>4개 퀘스트로 공백기 리스크를 분산한다</h2><p>우선순위와 리소스 제약을 함께 고려해 네 개의 실행 축을 단계적으로 추진합니다.</p></div>
             <div className="section-flag"><Target size={17} /><span>ACTION SYSTEM</span></div>
           </div>
           <div className="strategy-layout">
@@ -325,7 +358,7 @@ export default function Home() {
         <section className="stage-section clear-section">
           <img className="clear-bg" src="/manus-storage/marketing-quest-clear_bba3a96d.png" alt="" aria-hidden="true" />
           <img className="clear-star" src="/manus-storage/fantasy_ornament_star_ffc3f9b9.png" alt="" aria-hidden="true" />
-          <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="05" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>이벤트 연동 변동성과 유저 반응, 리텐션 후킹 비교를 종합한 실행 우선순위입니다.</p></div>
+          <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="06" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>이벤트 연동 변동성과 유저 반응, 리텐션 후킹 비교를 종합한 실행 우선순위입니다.</p></div>
           <div className="clear-grid">
             {["시즌 단위 정례 업데이트 체계 도입", "이벤트 공백기 최소화", "경쟁사 이벤트 캘린더 선제 모니터링", "IP 콜라보형 채널 신설 검토", "상시복귀지원 도입 검토", "강점 자산(성장지원형 · 평점 신뢰도) 강화"].map((item, index) => <div className="clear-item" key={item}><span>{index + 1}</span><b>{item}</b></div>)}
             <div className="clear-item final"><span>7</span><b>검색 관심 · 복귀 니즈 반등 신호를 지속 모니터링</b></div>

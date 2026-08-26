@@ -5,7 +5,7 @@
 import { ChevronLeft, ChevronRight, Keyboard, Mic2, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
-export type QuestSection = "home" | "performance" | "battle" | "retention" | "strategy" | "clear";
+export type QuestSection = "home" | "performance" | "battle" | "retention" | "monetization" | "strategy" | "clear";
 
 type QuestChromeProps = {
   activeSection: QuestSection;
@@ -23,8 +23,9 @@ const questNav: Array<{ id: QuestSection; label: string; short: string; index: s
   { id: "performance", label: "PERFORMANCE", short: "성과", index: "01" },
   { id: "battle", label: "BATTLE CONSOLE", short: "경쟁 압력", index: "02" },
   { id: "retention", label: "RETENTION", short: "유저 반응", index: "03" },
-  { id: "strategy", label: "STRATEGY QUEST", short: "실행 전략", index: "04" },
-  { id: "clear", label: "QUEST CLEAR", short: "결론", index: "05" },
+  { id: "monetization", label: "MONETIZATION FUNNEL", short: "BM · 매출 퍼널", index: "04" },
+  { id: "strategy", label: "STRATEGY QUEST", short: "실행 전략", index: "05" },
+  { id: "clear", label: "QUEST CLEAR", short: "결론", index: "06" },
 ];
 
 export function QuestChrome({
@@ -56,7 +57,7 @@ export function QuestChrome({
 
         <div className="rail-caption">
           <span>QUEST LOG</span>
-          <b>{String(activeIndex + 1).padStart(2, "0")} / 06</b>
+          <b>{String(activeIndex + 1).padStart(2, "0")} / 07</b>
         </div>
 
         <nav className="quest-nav">
