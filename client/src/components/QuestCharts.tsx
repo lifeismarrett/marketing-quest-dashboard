@@ -47,11 +47,16 @@ function formatShortDate(value: string) {
   return `${Number(month)}/${Number(day)}`;
 }
 
+function formatExactDate(value: string) {
+  const [year, month, day] = value.split("-");
+  return `${year}.${month}.${day}`;
+}
+
 function RankTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
     <div className="chart-tooltip">
-      <b>{formatShortDate(label)} 주간</b>
+      <b>{formatExactDate(label)} · 주간</b>
       {payload.filter((entry: any) => entry.value !== null).map((entry: any) => (
         <span key={entry.name} style={{ color: entry.color }}>
           {GAME_LABELS[entry.name] ?? entry.name} <strong>{entry.value}위</strong>
@@ -132,7 +137,7 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
               stroke={GAME_COLORS[item]}
               strokeWidth={item === "메이플스토리M" ? 3.25 : 2}
               dot={false}
-              activeDot={{ r: 5, strokeWidth: 3 }}
+              activeDot={{ r: 5.5, fill: "#fffdf8", stroke: GAME_COLORS[item], strokeWidth: 3 }}
               isAnimationActive={false}
               connectNulls={false}
             />
@@ -162,7 +167,7 @@ function SearchTooltip({ active, payload, label }: any) {
   );
 }
 
-export function SearchInterestChart({ game = "ALL" }: { game?: GameName }) {
+export function SearchInterestChart({ game = "ALL", chartHeight = 264 }: { game?: GameName; chartHeight?: number }) {
   const selectedGames = game === "ALL"
     ? SEARCH_INTEREST_GAMES
     : SEARCH_INTEREST_GAMES.filter((item) => item.game === game);
@@ -175,7 +180,7 @@ export function SearchInterestChart({ game = "ALL" }: { game?: GameName }) {
         </div>
         <span className="rank-rule neutral">공통 100 기준 · 상대지수</span>
       </div>
-      <ResponsiveContainer width="100%" height={264}>
+      <ResponsiveContainer width="100%" height={chartHeight}>
         <LineChart data={SEARCH_INTEREST_4GAME_DATA as unknown as any[]} margin={{ top: 12, right: 10, bottom: 3, left: -4 }}>
           <CartesianGrid stroke="#E6E0D4" vertical={false} />
           <XAxis dataKey="date" tickFormatter={(value) => value.slice(2, 7)} minTickGap={26} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
