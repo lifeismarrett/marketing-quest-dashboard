@@ -72,14 +72,14 @@ export default function Home() {
   const [presenterMode, setPresenterMode] = useState(false);
   const [performanceMetric, setPerformanceMetric] = useState<"revenue" | "users" | "search">("revenue");
   const [performanceGame, setPerformanceGame] = useState<GameName>("ALL");
-  const [battleOpponent, setBattleOpponent] = useState<GameName>("아이온2");
+  const [battleOpponent, setBattleOpponent] = useState<GameName>("ALL");
   const [battleMetric, setBattleMetric] = useState<RankMetric>("revenue");
   const [eventOnly, setEventOnly] = useState(false);
   const [activeCase, setActiveCase] = useState("case-aion-reboost");
   const [activeQuest, setActiveQuest] = useState("q1");
 
   const currentQuest = strategyQuests.find((item) => item.id === activeQuest) ?? strategyQuests[0];
-  const battleCasesForOpponent = battleCases.filter((item) => item.opponent === battleOpponent);
+  const battleCasesForOpponent = battleOpponent === "ALL" ? battleCases : battleCases.filter((item) => item.opponent === battleOpponent);
   const selectedCase = battleCases.find((item) => item.id === activeCase) ?? battleCasesForOpponent[0] ?? battleCases[0];
   const nearbyEvents = useMemo(() => verifiedEvents.filter((event) => event.major).slice(-8), []);
 
@@ -195,7 +195,7 @@ export default function Home() {
           </div>
           <div className="battle-controls">
             <div className="opponent-tabs">
-              {["검은사막 모바일", "아이온2", "마비노기 모바일"].map((game) => <button key={game} onClick={() => { setBattleOpponent(game as GameName); setActiveCase(battleCases.find((item) => item.opponent === game)?.id ?? "case-aion-reboost"); }} className={battleOpponent === game ? "selected" : ""}>메이플M <span>VS</span> {game.replace(" 모바일", "M")}</button>)}
+              {["ALL", "검은사막 모바일", "아이온2", "마비노기 모바일"].map((game) => <button key={game} onClick={() => { setBattleOpponent(game as GameName); setActiveCase(battleCases.find((item) => item.opponent === game)?.id ?? battleCases[0].id); }} className={battleOpponent === game ? "selected" : ""}>{game === "ALL" ? "4사 통합" : <>메이플M <span>VS</span> {game.replace(" 모바일", "M")}</>}</button>)}
             </div>
             <div className="battle-toggle-group">
               <button className={battleMetric === "revenue" ? "selected" : ""} onClick={() => setBattleMetric("revenue")}>게임 순위</button>
@@ -207,7 +207,7 @@ export default function Home() {
             <div className="battle-chart-card">
               <RankTrendChart metric={battleMetric} game={battleOpponent} compact />
               <div className={`event-timeline ${eventOnly ? "event-focus" : ""}`}>
-                {nearbyEvents.filter((event) => event.game === "메이플스토리 M" || event.game === battleOpponent).slice(-5).map((event) => (
+                {nearbyEvents.filter((event) => battleOpponent === "ALL" || event.game === "메이플스토리 M" || event.game === battleOpponent).slice(-5).map((event) => (
                   <div className={`event-chip ${event.game === "메이플스토리 M" ? "maple" : "opponent"}`} key={event.id}>
                     <small>{event.date?.slice(5, 10)}</small><span>{event.name}</span>
                   </div>
@@ -215,7 +215,7 @@ export default function Home() {
               </div>
             </div>
             <aside className="case-console">
-              <div className="case-console-head"><span>CASE STUDY</span><b>동반 / 상극</b></div>
+              <div className="case-console-head"><span>CASE STUDY</span><b>{battleOpponent === "ALL" ? "4사 통합" : "동반 / 상극"}</b></div>
               <div className="case-list">
                 {(battleCasesForOpponent.length ? battleCasesForOpponent : battleCases).map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small>{item.mapleEvent}</small></button>)}
               </div>

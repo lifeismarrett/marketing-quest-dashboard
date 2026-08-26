@@ -52,11 +52,12 @@ function RankTooltip({ active, payload, label }: any) {
   );
 }
 
-export function RankTrendChart({ metric, game, compact = false }: { metric: RankMetric; game: GameName; compact?: boolean }) {
+export function RankTrendChart({ metric, game, compact = false, showReboost }: { metric: RankMetric; game: GameName; compact?: boolean; showReboost?: boolean }) {
   const key = metric;
   const selectedGames = game === "ALL"
     ? ["메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"]
     : [game];
+  const shouldShowReboost = showReboost ?? selectedGames.includes("메이플스토리M");
   const data = rankTimeline.map((row) => ({
     date: row.date,
     ...((row as any)[key]),
@@ -87,7 +88,7 @@ export function RankTrendChart({ metric, game, compact = false }: { metric: Rank
           <XAxis dataKey="date" tickFormatter={formatShortDate} minTickGap={28} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <YAxis reversed domain={[0, 210]} axisLine={false} tickLine={false} width={34} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <Tooltip content={<RankTooltip />} />
-          <ReferenceLine x="2026-07-13" stroke="#F3B542" strokeWidth={1.5} strokeDasharray="4 4" label={{ value: "RE:BOOST", position: "top", fill: "#AB7010", fontSize: 10 }} />
+          {shouldShowReboost && <ReferenceLine x="2026-07-13" stroke="#F3B542" strokeWidth={1.5} strokeDasharray="4 4" label={{ value: "메이플M RE:BOOST", position: "top", fill: "#AB7010", fontSize: 10 }} />}
           {selectedGames.map((item) => (
             <Line
               key={item}
