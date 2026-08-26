@@ -13,6 +13,19 @@ import { battleCases, verifiedEvents } from "@/data/dashboardData";
 const sections: QuestSection[] = ["home", "performance", "battle", "retention", "strategy", "clear"];
 const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
 
+const battleComparisons: Array<{
+  id: string;
+  title: string;
+  games: Array<Exclude<GameName, "ALL">>;
+  opponent?: Exclude<GameName, "ALL" | "메이플스토리M">;
+  showReboost: boolean;
+}> = [
+  { id: "all", title: "01 · 4사 통합", games: ["메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"], showReboost: true },
+  { id: "bdm", title: "02 · 메이플M vs 검은사막M", games: ["메이플스토리M", "검은사막 모바일"], opponent: "검은사막 모바일", showReboost: false },
+  { id: "aion", title: "03 · 메이플M vs 아이온2", games: ["메이플스토리M", "아이온2"], opponent: "아이온2", showReboost: false },
+  { id: "mab", title: "04 · 메이플M vs 마비노기M", games: ["메이플스토리M", "마비노기 모바일"], opponent: "마비노기 모바일", showReboost: false },
+];
+
 const notes: Record<QuestSection, string[]> = {
   home: ["발표의 질문을 먼저 고정합니다: 경쟁 압력 속에서 무엇을 실행할 것인가.", "최종 PPT의 수치와 해석을 기준으로, 원시 데이터는 탐색 근거로만 사용합니다."],
   performance: ["순위 축은 역방향입니다. 선이 위로 갈수록 더 좋은 순위입니다.", "RE:BOOST 구간의 동시 반등은 타이밍 정렬이며, 직접 인과로 표현하지 않습니다."],
@@ -72,15 +85,13 @@ export default function Home() {
   const [presenterMode, setPresenterMode] = useState(false);
   const [performanceMetric, setPerformanceMetric] = useState<"revenue" | "users" | "search">("revenue");
   const [performanceGame, setPerformanceGame] = useState<GameName>("ALL");
-  const [battleOpponent, setBattleOpponent] = useState<GameName>("ALL");
   const [battleMetric, setBattleMetric] = useState<RankMetric>("revenue");
   const [eventOnly, setEventOnly] = useState(false);
   const [activeCase, setActiveCase] = useState("case-aion-reboost");
   const [activeQuest, setActiveQuest] = useState("q1");
 
   const currentQuest = strategyQuests.find((item) => item.id === activeQuest) ?? strategyQuests[0];
-  const battleCasesForOpponent = battleOpponent === "ALL" ? battleCases : battleCases.filter((item) => item.opponent === battleOpponent);
-  const selectedCase = battleCases.find((item) => item.id === activeCase) ?? battleCasesForOpponent[0] ?? battleCases[0];
+  const selectedCase = battleCases.find((item) => item.id === activeCase) ?? battleCases[0];
   const nearbyEvents = useMemo(() => verifiedEvents.filter((event) => event.major).slice(-8), []);
 
   const changeSection = (next: QuestSection) => setActive(next);
@@ -194,39 +205,39 @@ export default function Home() {
             <div className="battle-stamp"><Swords size={18} /> VS</div>
           </div>
           <div className="battle-controls">
-            <div className="opponent-tabs">
-              {["ALL", "검은사막 모바일", "아이온2", "마비노기 모바일"].map((game) => <button key={game} onClick={() => { setBattleOpponent(game as GameName); setActiveCase(battleCases.find((item) => item.opponent === game)?.id ?? battleCases[0].id); }} className={battleOpponent === game ? "selected" : ""}>{game === "ALL" ? "4사 통합" : <>메이플M <span>VS</span> {game.replace(" 모바일", "M")}</>}</button>)}
-            </div>
+            <div className="battle-board-caption"><span>FOUR-CHART COMPARISON</span><b>공통 기간 · 공통 순위 축</b></div>
             <div className="battle-toggle-group">
               <button className={battleMetric === "revenue" ? "selected" : ""} onClick={() => setBattleMetric("revenue")}>게임 순위</button>
               <button className={battleMetric === "users" ? "selected" : ""} onClick={() => setBattleMetric("users")}>이용자수</button>
-              <button className={eventOnly ? "selected" : ""} onClick={() => setEventOnly(!eventOnly)}><CalendarDays size={13} /> 이벤트만</button>
+              <button className={eventOnly ? "selected" : ""} onClick={() => setEventOnly(!eventOnly)}><CalendarDays size={13} /> 이벤트 사례만</button>
             </div>
           </div>
-          <div className="battle-grid">
-            <div className="battle-chart-card">
-              <RankTrendChart metric={battleMetric} game={battleOpponent} compact />
-              <div className={`event-timeline ${eventOnly ? "event-focus" : ""}`}>
-                {nearbyEvents.filter((event) => battleOpponent === "ALL" || event.game === "메이플스토리 M" || event.game === battleOpponent).slice(-5).map((event) => (
-                  <div className={`event-chip ${event.game === "메이플스토리 M" ? "maple" : "opponent"}`} key={event.id}>
-                    <small>{event.date?.slice(5, 10)}</small><span>{event.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <aside className="case-console">
-              <div className="case-console-head"><span>CASE STUDY</span><b>{battleOpponent === "ALL" ? "4사 통합" : "동반 / 상극"}</b></div>
-              <div className="case-list">
-                {(battleCasesForOpponent.length ? battleCasesForOpponent : battleCases).map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small>{item.mapleEvent}</small></button>)}
-              </div>
-              <div className="case-detail">
-                <span className={`outcome-badge ${selectedCase.outcome}`}>{selectedCase.outcome}</span>
-                <h3>{selectedCase.mapleEvent}</h3>
-                <div className="case-vs"><span>MAPLE M</span><i>↔</i><span>{selectedCase.opponentEvent}</span></div>
-                <p>{selectedCase.detail}</p>
-              </div>
-            </aside>
+          <div className="battle-board" aria-label="메이플스토리M 경쟁사 4개 비교 차트">
+            {battleComparisons.map((comparison) => {
+              const comparisonCase = comparison.opponent ? battleCases.find((item) => item.opponent === comparison.opponent) : battleCases.find((item) => item.id === "case-aion-reboost");
+              const isActive = comparisonCase?.id === selectedCase.id;
+              return (
+                <article
+                  className={`battle-chart-card comparison-card ${isActive ? "is-active" : ""}`}
+                  key={comparison.id}
+                  tabIndex={0}
+                  onClick={() => comparisonCase && setActiveCase(comparisonCase.id)}
+                  onFocus={() => comparisonCase && setActiveCase(comparisonCase.id)}
+                >
+                  <header className="comparison-card-head"><span>{comparison.title}</span><small>{comparison.id === "all" ? "4 GAMES" : "1:1 MATCH"}</small></header>
+                  <RankTrendChart metric={battleMetric} games={comparison.games} compact showReboost={comparison.showReboost} chartHeight={174} />
+                </article>
+              );
+            })}
           </div>
+          <section className={`case-brief ${eventOnly ? "event-only" : ""}`} aria-label="이벤트 사례 브리프">
+            <div className="case-brief-head"><span>EVENT CASE BRIEF</span><b>{eventOnly ? "이벤트 사례 집중" : "동반 / 상극"}</b></div>
+            <div className="case-brief-list">
+              {battleCases.map((item) => <button key={item.id} onClick={() => setActiveCase(item.id)} className={selectedCase.id === item.id ? "is-selected" : ""}><span>{item.date}</span><b>{item.outcome}</b><small>{item.mapleEvent}</small></button>)}
+            </div>
+            <div className="case-brief-detail"><span className={`outcome-badge ${selectedCase.outcome}`}>{selectedCase.outcome}</span><b>{selectedCase.mapleEvent}</b><i>MAPLE M ↔ {selectedCase.opponentEvent}</i><p>{selectedCase.detail}</p></div>
+            {eventOnly && <div className="case-event-strip">{nearbyEvents.slice(-5).map((event) => <span key={event.id}><b>{event.date?.slice(5, 10)}</b>{event.name}</span>)}</div>}
+          </section>
           <div className="collision-callout"><Compass size={17} /><b>4사 캘린더 대조</b><span>이벤트 일정을 정기 갱신하고, 같은 기간 경쟁사 이벤트의 수·규모로 Low / Mid / High 경쟁 압력을 판단합니다.</span><button onClick={() => setActive("strategy")}>대응 퀘스트 보기 <ArrowUpRight size={14} /></button></div>
         </section>
       )}
