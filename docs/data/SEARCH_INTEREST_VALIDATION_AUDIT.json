@@ -1,0 +1,11 @@
+{
+  "primaryOfficialWeeklyRows": 39,
+  "aliasWeeklyRows": 39,
+  "longWeeklyRows": 161,
+  "primaryOfficialMatchesSuppliedRaw": true,
+  "primaryOfficialStart": "2025-11-17",
+  "primaryOfficialEnd": "2026-08-10",
+  "longStart": "2023-07-31",
+  "longEnd": "2026-08-24",
+  "dataNote": "The long-range response is stored separately and never mixed with primary 39-week normalized values."
+}

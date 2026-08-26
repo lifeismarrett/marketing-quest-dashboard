@@ -10,6 +10,7 @@ import { QuestChrome, type QuestSection } from "@/components/QuestChrome";
 import { RankTrendChart, SearchInterestChart, type GameName, type RankMetric } from "@/components/QuestCharts";
 import { battleCases, verifiedEvents } from "@/data/dashboardData";
 import { evidenceMeta, funnelStages, monetizationRows, type EvidenceStatus } from "@/data/monetizationData";
+import { SEARCH_INTEREST_GAMES, SEARCH_INTEREST_RETENTION, SEARCH_INTEREST_SUMMARY } from "@/data/searchInterestData";
 
 const sections: QuestSection[] = ["home", "performance", "battle", "retention", "monetization", "strategy", "clear"];
 const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
@@ -44,13 +45,25 @@ const retentionRows = [
   ["상시복귀지원형", "—", "—", "—", "새싹뱃지 (28일 미접속 보상)"],
 ];
 
-const retentionCurve = [
-  { stage: "M0", "메이플스토리M": 100, "검은사막 모바일": 100, "마비노기 모바일": 53, "아이온2": 100 },
-  { stage: "M1", "메이플스토리M": 25, "검은사막 모바일": 61, "마비노기 모바일": 100, "아이온2": 61 },
-  { stage: "M3", "메이플스토리M": 8, "검은사막 모바일": 27, "마비노기 모바일": 81, "아이온2": 9 },
-  { stage: "M6", "메이플스토리M": 3, "검은사막 모바일": 15, "마비노기 모바일": 41, "아이온2": 7 },
-  { stage: "M8", "메이플스토리M": 4.3, "검은사막 모바일": 4.5, "마비노기 모바일": 34.3, "아이온2": 18.6 },
-];
+type SearchGame = Exclude<GameName, "ALL">;
+const searchInterestGames = SEARCH_INTEREST_GAMES as unknown as Array<{ game: SearchGame; short: string; color: string }>;
+const retentionCurve = SEARCH_INTEREST_RETENTION as unknown as Array<{ stage: string } & Partial<Record<SearchGame, number | null>>>;
+const searchInterestSummary = SEARCH_INTEREST_SUMMARY as unknown as Array<{
+  game: SearchGame;
+  peak: number;
+  peakWeek: string;
+  first4: number;
+  recent4: number;
+  firstToRecentChange: number;
+  postPeakRetention: number;
+  weeksFromPeakToObservedEnd: number;
+}>;
+const mapleSearchSummary = searchInterestSummary.find((item) => item.game === "메이플스토리M")!;
+
+function retentionLegend(game: SearchGame) {
+  const summary = searchInterestSummary.find((item) => item.game === game)!;
+  return `종료 +${summary.weeksFromPeakToObservedEnd}주 ${summary.postPeakRetention.toFixed(1)}%`;
+}
 
 const strategyQuests = [
   { id: "q1", index: "QUEST 01", title: "IP · 브랜드 콜라보 확대", why: "동일 시기 콜라보 대비 화제성 격차가 확인된 공백을 보완합니다.", how: ["잠재 IP 롱리스트 작성", "파트너십 리드타임 산정", "티저·쇼케이스 확장 시점에 런칭"], risk: "디자인 보호·협상 리드타임·현장 운영 이슈", kpi: ["콜라보 주간 YouTube 조회수", "검색 관심 점유율 변화", "커뮤니티 ‘복귀’ 언급량"], color: "purple", horizon: "중기 · 1분기" },
@@ -103,7 +116,7 @@ export default function Home() {
     ? { label: "RE:BOOST IMPACT", before: "87", after: "34", suffix: "위", detail: "게임(매출) 순위 53단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
     : performanceMetric === "users"
       ? { label: "USER RANK IMPACT", before: "69", after: "33", suffix: "위", detail: "이용자수 순위 36단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
-      : { label: "SEARCH PEAK", before: "1.92", after: "", suffix: "", detail: "최근 검색 관심 상승 신호", foot: "NAVER DATALAB · 최근 4주 +161.6%" };
+      : { label: "SEARCH PEAK", before: mapleSearchSummary.peak.toFixed(2), after: "", suffix: "", detail: "4게임 공통 기준 · 메이플M 최고 주간", foot: `NAVER DATALAB · ${mapleSearchSummary.peakWeek} · 최근 4주 ${mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}${mapleSearchSummary.firstToRecentChange.toFixed(1)}%` };
 
   const changeSection = (next: QuestSection) => setActive(next);
   const moveSection = (direction: number) => {
@@ -186,13 +199,13 @@ export default function Home() {
               </TabsList>
             </Tabs>
             <div className="game-filter" aria-label="게임 필터">
-              {games.map((game) => <button key={game} disabled={performanceMetric === "search"} className={`${performanceGame === game ? "selected" : ""} ${performanceMetric === "search" ? "is-disabled" : ""}`} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
-              {performanceMetric === "search" && <span className="filter-context">검색 관심: 메이플M·아이온2 비교</span>}
+              {games.map((game) => <button key={game} className={performanceGame === game ? "selected" : ""} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
+              {performanceMetric === "search" && <span className="filter-context">검색 관심: 4게임 · 주간 · 공통 최대값 100 · 상대지수</span>}
             </div>
           </div>
           <div className="performance-grid">
             <div className="main-chart-card">
-              {performanceMetric === "search" ? <SearchInterestChart /> : <RankTrendChart metric={performanceMetric} game={performanceGame} />}
+              {performanceMetric === "search" ? <SearchInterestChart game={performanceGame} /> : <RankTrendChart metric={performanceMetric} game={performanceGame} />}
             </div>
             <aside className="performance-insights">
               <div className="impact-card">
@@ -202,7 +215,7 @@ export default function Home() {
                 <p>{primaryEvidence.detail}</p>
                 <div className="impact-foot">{primaryEvidence.foot}</div>
               </div>
-              <MiniLine label="SEARCH PEAK" tone="gold">1.92 <small>2026.07.27</small></MiniLine>
+              <MiniLine label="SEARCH PEAK" tone="gold">{mapleSearchSummary.peak.toFixed(2)} <small>{mapleSearchSummary.peakWeek}</small></MiniLine>
               <MiniLine label="USER RANK" tone="blue">69 → 33위 <small>36단계 개선</small></MiniLine>
               <MiniLine label="BEST REVENUE RANK" tone="green">21위 <small>2026.08.03</small></MiniLine>
               <div className="caution-box"><AlertTriangle size={15} /><span>검색·콘텐츠·뉴스의 동시 반등은 <b>시기적 동행</b>이며 직접 인과로 단정하지 않습니다.</span></div>
@@ -210,7 +223,7 @@ export default function Home() {
           </div>
           <div className="channel-strip">
             <span className="strip-label">CHANNEL CROSS-CHECK</span>
-            <MiniLine label="NAVER DATALAB" tone="gold">0.39 → 1.02 <small>최근 4주 +161.6%</small></MiniLine>
+            <MiniLine label="NAVER DATALAB" tone="gold">{mapleSearchSummary.first4.toFixed(2)} → {mapleSearchSummary.recent4.toFixed(2)} <small>최근 4주 {mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}{mapleSearchSummary.firstToRecentChange.toFixed(1)}%</small></MiniLine>
             <MiniLine label="OFFICIAL YOUTUBE" tone="blue">128편 <small>중앙값 32,148회</small></MiniLine>
             <MiniLine label="BIGKinds NEWS" tone="purple">85건 <small>원자료 396건 중 21.5%</small></MiniLine>
             <MiniLine label="MARKET RESPONSE" tone="green">TOP 30 <small>2026.08.10 · 29위</small></MiniLine>
@@ -282,20 +295,28 @@ export default function Home() {
               <div className="collab-gap-card"><span className="eyebrow">IP COLLAB GAP</span><h3>화제성 격차의 핵심</h3><div><b>69×</b><span>동일 시기 YouTube 조회수 격차<br />마비노기 모바일 산리오 사례 대비</span></div><p>IP 콜라보형은 메이플M의 확인된 공백입니다.</p></div>
               <div className="return-card"><span className="eyebrow">ALWAYS-ON RETURN</span><h3>아이온2의 새싹뱃지</h3><p>28일 미접속 후 자동 보상. 이벤트 타이밍과 무관하게 복귀 채널을 유지합니다.</p></div>
             </div>
-            <div className="retention-chart-card">
-              <div className="card-header"><span className="eyebrow">SEARCH-INTEREST RETENTION</span><h3>출시 후 검색 관심 잔존율</h3><span className="proxy-note">자체 검색 피크 대비 · 프록시</span></div>
+              <div className="retention-chart-card">
+              <div className="card-header"><span className="eyebrow">SEARCH-INTEREST RETENTION</span><h3>Peak 이후 검색 관심 잔존율</h3><span className="proxy-note">자체 peak 대비 · 4주 간격 · 프록시</span></div>
               <div className="retention-svg-wrap">
-                <svg className="retention-svg" viewBox="0 0 570 194" role="img" aria-label="게임별 출시 후 검색 관심 잔존율 추이">
+                <svg className="retention-svg" viewBox="0 0 570 194" role="img" aria-label="게임별 peak 이후 검색 관심 잔존율 추이">
                   {[0, 20, 40, 60, 80, 100].map((tick) => <g key={tick}><line x1="44" x2="556" y1={171 - tick * 1.34} y2={171 - tick * 1.34} stroke="#E5DED3" /><text x="28" y={175 - tick * 1.34} fill="#86808A" fontSize="10">{tick}</text></g>)}
-                  {Object.entries({ "메이플스토리M": "#F39C27", "검은사막 모바일": "#638AC0", "마비노기 모바일": "#AF63C3", "아이온2": "#34A476" }).map(([game, color]) => {
-                    const path = retentionCurve.map((point, index) => `${index === 0 ? "M" : "L"}${58 + index * 118},${171 - Number((point as any)[game]) * 1.34}`).join(" ");
-                    return <path key={game} d={path} fill="none" stroke={color} strokeWidth={game === "메이플스토리M" ? 3 : 2.2} />;
+                  {searchInterestGames.map(({ game, color }) => {
+                    let contiguous = false;
+                    const path = retentionCurve.map((point, index) => {
+                      const value = point[game];
+                      if (typeof value !== "number") { contiguous = false; return ""; }
+                      const command = contiguous ? "L" : "M";
+                      contiguous = true;
+                      return `${command}${58 + index * 92},${171 - value * 1.34}`;
+                    }).join(" ");
+                    return <g key={game}><path d={path} fill="none" stroke={color} strokeWidth={game === "메이플스토리M" ? 3 : 2.2} />{retentionCurve.map((point, index) => typeof point[game] === "number" ? <circle key={`${game}-${point.stage}`} cx={58 + index * 92} cy={171 - Number(point[game]) * 1.34} r="2.4" fill={color} /> : null)}</g>;
                   })}
-                  {retentionCurve.map((point, index) => <text key={point.stage} x={54 + index * 118} y="191" textAnchor="middle" fill="#86808A" fontSize="11">{point.stage}</text>)}
+                  {retentionCurve.map((point, index) => <text key={point.stage} x={58 + index * 92} y="191" textAnchor="middle" fill="#86808A" fontSize="11">{point.stage}</text>)}
                 </svg>
               </div>
-              <div className="retention-legend"><span className="maple">메이플M 4.3%</span><span className="bdm">검은사막M 4.5%</span><span className="mab">마비노기M 34.3%</span><span className="aion">아이온2 18.6%</span></div>
-            </div>
+              <div className="retention-legend">{searchInterestGames.map(({ game, short, color }) => <span key={game} style={{ "--retention-color": color } as React.CSSProperties}>{short} {retentionLegend(game)}</span>)}</div>
+              <p className="retention-scope-note">M0=peak · M1~M5=각 +4주 · 종료%=마지막 관측치(보간 없음)</p>
+              </div>
           </div>
           <div className="store-card">
             <div className="store-summary"><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>

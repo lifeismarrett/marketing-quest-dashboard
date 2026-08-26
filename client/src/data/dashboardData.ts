@@ -1927,7 +1927,7 @@ export const battleCases = [
 
 export const sourceNotes = {
   "rank": "Source: mobileindex.com · final PPT embedded chart cache · 39 weekly observations, 2025-11-17 to 2026-08-10.",
-  "search": "Source: provided NAVER DataLab CSV. Relative normalised interest signal, not absolute market share.",
+  "search": "Source: NAVER DataLab · four official-name groups in one weekly request · common maximum=100. Relative interest only; not absolute searches, market share, DAU, or revenue.",
   "events": "Source: Official LiveOps verification workbook. Event timing is factual; movement is presented as association only.",
   "youtube": "Source: provided official YouTube CSV exports. The final PPT headline remains authoritative for reporting-period summary values."
 } as const;

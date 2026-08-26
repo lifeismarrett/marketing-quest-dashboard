@@ -14,7 +14,8 @@ import {
   YAxis,
 } from "recharts";
 import { useEffect, useRef, useState } from "react";
-import { naverInterest, rankTimeline, sourceNotes } from "@/data/dashboardData";
+import { rankTimeline, sourceNotes } from "@/data/dashboardData";
+import { SEARCH_INTEREST_4GAME_DATA, SEARCH_INTEREST_GAMES, SEARCH_INTEREST_SOURCE } from "@/data/searchInterestData";
 
 export type RankMetric = "revenue" | "users";
 export type GameName = "ALL" | "메이플스토리M" | "검은사막 모바일" | "마비노기 모바일" | "아이온2";
@@ -161,28 +162,30 @@ function SearchTooltip({ active, payload, label }: any) {
   );
 }
 
-export function SearchInterestChart() {
+export function SearchInterestChart({ game = "ALL" }: { game?: GameName }) {
+  const selectedGames = game === "ALL"
+    ? SEARCH_INTEREST_GAMES
+    : SEARCH_INTEREST_GAMES.filter((item) => item.game === game);
   return (
     <div className="chart-frame search-chart">
       <div className="chart-heading">
         <div>
           <span className="eyebrow">SEARCH SIGNAL</span>
-          <h3>NAVER DataLab 검색 관심</h3>
+          <h3>NAVER DataLab 4사 검색 관심</h3>
         </div>
-        <span className="rank-rule neutral">상대지수</span>
+        <span className="rank-rule neutral">공통 100 기준 · 상대지수</span>
       </div>
       <ResponsiveContainer width="100%" height={264}>
-        <LineChart data={naverInterest as unknown as any[]} margin={{ top: 12, right: 10, bottom: 3, left: -18 }}>
+        <LineChart data={SEARCH_INTEREST_4GAME_DATA as unknown as any[]} margin={{ top: 12, right: 10, bottom: 3, left: -4 }}>
           <CartesianGrid stroke="#E6E0D4" vertical={false} />
           <XAxis dataKey="date" tickFormatter={(value) => value.slice(2, 7)} minTickGap={26} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <YAxis axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <Tooltip content={<SearchTooltip />} />
-          <Line type="monotone" dataKey="메이플스토리M" stroke="#F39C27" strokeWidth={3.2} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
-          <Line type="monotone" dataKey="아이온2" stroke="#4A97D1" strokeWidth={2.1} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
+          {selectedGames.map((item) => <Line key={item.game} type="monotone" dataKey={item.game} name={item.short} stroke={item.color} strokeWidth={item.game === "메이플스토리M" ? 3.2 : 2.1} dot={false} activeDot={{ r: 4 }} isAnimationActive={false} connectNulls={false} />)}
           <Legend wrapperStyle={{ fontSize: 11, paddingTop: 10 }} />
         </LineChart>
       </ResponsiveContainer>
-      <p className="chart-source">{sourceNotes.search}</p>
+      <p className="chart-source">Source: {SEARCH_INTEREST_SOURCE.provider} · 주간 · {SEARCH_INTEREST_SOURCE.normalization}. 상대지수이며 절대 검색량·매출·DAU·점유율이 아닙니다.</p>
     </div>
   );
 }
