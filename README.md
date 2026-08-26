@@ -2,6 +2,12 @@
 
 메이플스토리M 경쟁 벤치마킹 및 매출 성장 기회 발굴 인터랙티브 대시보드입니다. 경쟁 MMORPG 3종의 공개 시장 반응, 유저 후킹, 공개 BM 구조를 비교해 메이플스토리M이 내부 데이터로 먼저 검증할 매출 성장 후보를 좁힙니다.
 
+## Live Dashboard
+
+[Open the live MARKETING QUEST dashboard](https://mktquestdash-kfhuh6sd.manus.space/)
+
+![MARKETING QUEST Dashboard Overview](./preview/01_overview.png)
+
 ## Quick Navigation
 
 | 자료 | 링크 |
@@ -29,6 +35,16 @@
 `시장 반응 → 경쟁 압력 → 유저 반응 → BM·매출 퍼널 → 검증 우선순위 → 전략`
 
 대시보드는 Mission Briefing, Performance, Battle Console, Retention, Monetization Funnel, Strategy Quest, Quest Clear의 7개 발표 상태로 구성됩니다. [`preview/`](./preview/)에서 공개 배포본의 대표 화면을 확인할 수 있습니다.
+
+## Key Market Signals
+
+| 신호 | 검증된 값 | 해석 경계 |
+|---|---:|---|
+| 게임(매출) 순위 | 87 → 34위 | 실제 매출액이 아닌 순위 |
+| 이용자수 순위 | 69 → 33위 | 절대 이용자수가 아닌 순위 |
+| 관측 내 최고 게임(매출) 순위 | 21위 / 2026-08-03 | 관측 기간 내 최고 순위 |
+| Search Peak | 0.90 / 2026-07-27 | 절대 검색량이 아닌 상대지수 |
+| 최근 4주 상대지수 | 0.23 → 0.49 / +117.2% | 검색 관심의 상대 변화이며 매출 효과가 아님 |
 
 ## Evidence Principle
 

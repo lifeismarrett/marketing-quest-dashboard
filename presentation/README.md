@@ -1,15 +1,26 @@
-# Presentation
+# MARKETING QUEST 발표자료
 
-MARKETING QUEST 발표 및 배포 자료입니다. 발표 진행용 대본, 교수·대표·임원 배포용 Executive Brief, 발표 후 Q&A 대응 자료를 구분해 관리합니다.
+## 01 발표대본
 
-| 파일 | 용도 | 상태 |
-|---|---|---|
-| `01_마케팅퀘스트_발표대본_최종본.pdf` | 발표 진행용 | **MISSING FILE** — 현재 workspace에 실제 PDF가 없어 생성하지 않음 |
-| `02_마케팅퀘스트_임원용_핵심요약_최종본.pdf` | 교수·대표·임원 배포용 Executive Brief | 제공됨 |
-| `03_마케팅퀘스트_질의응답_대응자료_최종본.pdf` | 발표 후 Q&A 대응용 | **MISSING FILE** — 현재 workspace에 실제 PDF가 없어 생성하지 않음 |
+- 13분30초~14분 발표용
+- 대시보드 직접 조작 기준
+- 현재 workspace에 최종 PDF가 없어 **MISSING FILE**로 기록합니다.
 
-편집 가능한 발표 대본과 Q&A 원본은 현재 GitHub 저장소 밖의 workspace에만 존재하므로, PDF로 임의 변환하거나 새로 만들지 않았습니다.
+## 02 임원용 핵심요약
+
+- 교수 / 대표 / 임원 배포용
+- Executive Brief
+- A4 2페이지
+- [`02_마케팅퀘스트_임원용_핵심요약_최종본.pdf`](./02_마케팅퀘스트_임원용_핵심요약_최종본.pdf)
+
+## 03 질의응답 대응자료
+
+- 발표 직후 Q&A 대응
+- 공개 근거 / 성과 분리 / 내부 검증 프레임
+- 현재 workspace에 최종 PDF가 없어 **MISSING FILE**로 기록합니다.
 
 ## Live Dashboard
 
-[MARKETING QUEST Interactive Dashboard](https://mktquestdash-kfhuh6sd.manus.space/)
+[https://mktquestdash-kfhuh6sd.manus.space/](https://mktquestdash-kfhuh6sd.manus.space/)
+
+발표 대본과 Q&A의 편집 가능한 원본은 현재 workspace 밖에 있으며, 이번 단계에서는 새 PDF를 임의 생성하지 않았습니다.
