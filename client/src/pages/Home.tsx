@@ -93,6 +93,11 @@ export default function Home() {
   const currentQuest = strategyQuests.find((item) => item.id === activeQuest) ?? strategyQuests[0];
   const selectedCase = battleCases.find((item) => item.id === activeCase) ?? battleCases[0];
   const nearbyEvents = useMemo(() => verifiedEvents.filter((event) => event.major).slice(-8), []);
+  const primaryEvidence = performanceMetric === "revenue"
+    ? { label: "RE:BOOST IMPACT", before: "87", after: "34", suffix: "위", detail: "게임(매출) 순위 53단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
+    : performanceMetric === "users"
+      ? { label: "USER RANK IMPACT", before: "69", after: "33", suffix: "위", detail: "이용자수 순위 36단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
+      : { label: "SEARCH PEAK", before: "1.92", after: "", suffix: "", detail: "최근 검색 관심 상승 신호", foot: "NAVER DATALAB · 최근 4주 +161.6%" };
 
   const changeSection = (next: QuestSection) => setActive(next);
   const moveSection = (direction: number) => {
@@ -108,6 +113,14 @@ export default function Home() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active]);
+
+  useEffect(() => {
+    const resetToSectionStart = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.querySelector<HTMLElement>(".presentation-stage")?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    };
+    requestAnimationFrame(resetToSectionStart);
   }, [active]);
 
   return (
@@ -176,10 +189,10 @@ export default function Home() {
             </div>
             <aside className="performance-insights">
               <div className="impact-card">
-                <span className="eyebrow">RE:BOOST IMPACT</span>
-                <div className="impact-number"><b>87</b><ArrowUpRight size={25} /><b>34</b><small>위</small></div>
-                <p>게임(매출) 순위 53단계 개선</p>
-                <div className="impact-foot">2026.07.16–07.31 · 사전등록~출시</div>
+                <span className="eyebrow">{primaryEvidence.label}</span>
+                <div className={`impact-number ${performanceMetric === "search" ? "search-signal" : ""}`}><b>{primaryEvidence.before}</b>{primaryEvidence.after && <><ArrowUpRight size={25} /><b>{primaryEvidence.after}</b><small>{primaryEvidence.suffix}</small></>}</div>
+                <p>{primaryEvidence.detail}</p>
+                <div className="impact-foot">{primaryEvidence.foot}</div>
               </div>
               <MiniLine label="SEARCH PEAK" tone="gold">1.92 <small>2026.07.27</small></MiniLine>
               <MiniLine label="USER RANK" tone="blue">69 → 33위 <small>36단계 개선</small></MiniLine>

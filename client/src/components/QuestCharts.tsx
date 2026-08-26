@@ -32,10 +32,13 @@ const GAME_LABELS: Record<string, string> = {
   "아이온2": "아이온2",
 };
 
-const RANK_AXIS: Record<RankMetric, { domain: [number, number]; ticks: number[] }> = {
-  revenue: { domain: [0, 240], ticks: [0, 60, 120, 180, 240] },
-  users: { domain: [0, 240], ticks: [0, 60, 120, 180, 240] },
-};
+function getRankAxis(metric: RankMetric): { domain: [number, number]; ticks: number[] } {
+  const values = rankTimeline.flatMap((row) => Object.values(((row as any)[metric] ?? {}) as Record<string, unknown>))
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+  const observedMax = values.length ? Math.max(...values) : 240;
+  const upperBound = observedMax <= 240 ? 240 : Math.ceil((observedMax + 24) / 60) * 60;
+  return { domain: [0, upperBound], ticks: Array.from({ length: upperBound / 60 + 1 }, (_, index) => index * 60) };
+}
 
 function formatShortDate(value: string) {
   const [, month, day] = value.split("-");
@@ -68,7 +71,7 @@ type RankTrendChartProps = {
 
 export function RankTrendChart({ metric, game = "ALL", games, compact = false, showReboost, chartHeight }: RankTrendChartProps) {
   const key = metric;
-  const axis = RANK_AXIS[metric];
+  const axis = getRankAxis(metric);
   const fallbackGames: Array<Exclude<GameName, "ALL">> = game === "ALL"
     ? ["메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"]
     : [game];
@@ -99,11 +102,11 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
         <span className="rank-rule">↓ 낮을수록 상위</span>
       </div>
       <ResponsiveContainer width="100%" height={chartHeight ?? (compact ? 222 : 300)}>
-        <LineChart data={data} margin={{ top: 14, right: 14, bottom: 3, left: 0 }}>
+        <LineChart data={data} margin={{ top: 14, right: 14, bottom: compact ? 16 : 3, left: 0 }}>
           <CartesianGrid stroke="#E6E0D4" vertical={false} />
           <XAxis dataKey="date" tickFormatter={formatShortDate} minTickGap={28} axisLine={false} tickLine={false} tick={{ fill: "#7D7780", fontSize: 11 }} />
           <YAxis type="number" reversed domain={axis.domain} ticks={axis.ticks} allowDataOverflow axisLine={false} tickLine={false} width={42} tick={{ fill: "#7D7780", fontSize: 11 }} />
-          <Tooltip content={<RankTooltip />} />
+          <Tooltip content={<RankTooltip />} cursor={{ stroke: "#C9B77A", strokeWidth: 1, strokeDasharray: "3 3" }} />
           {shouldShowReboost && <ReferenceLine x="2026-07-13" stroke="#F3B542" strokeWidth={1.5} strokeDasharray="4 4" label={{ value: "메이플M RE:BOOST", position: "top", fill: "#AB7010", fontSize: 10 }} />}
           {selectedGames.map((item) => (
             <Line
@@ -114,7 +117,7 @@ export function RankTrendChart({ metric, game = "ALL", games, compact = false, s
               stroke={GAME_COLORS[item]}
               strokeWidth={item === "메이플스토리M" ? 3.25 : 2}
               dot={false}
-              activeDot={{ r: 4, strokeWidth: 2 }}
+              activeDot={{ r: 5, strokeWidth: 3 }}
               connectNulls={false}
             />
           ))}
