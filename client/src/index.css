@@ -370,3 +370,18 @@ button:focus-visible { outline: 3px solid rgba(243, 181, 66, .6); outline-offset
   .clear-section { min-height: 0; }
   .action-priorities-head { grid-template-columns: 1fr; }
 }
+
+/* Round 1: evidence clarity and projector hierarchy; no canonical data changes. */
+.battle-board-caption small { color: #9a7370; font-size: 9px; line-height: 1.35; }
+.comparison-card.is-active { box-shadow: 0 11px 24px rgba(47,52,78,.16); }
+.comparison-card.is-active .comparison-card-head span { color: #9a6f19; font-weight: 700; }
+.retention-chart-card .proxy-note { display: inline-flex; width: fit-content; max-width: 100%; padding: 4px 7px; border: 1px solid #d8e2ef; border-radius: 6px; background: #f1f6fb; color: #55779b; font-size: 9px; line-height: 1.35; white-space: normal; }
+.funnel-private-note { display: flex; align-items: center; gap: 7px; margin-top: 9px; padding: 7px 9px; border-left: 3px solid #a48b86; border-radius: 7px; background: #f6f1ec; color: #756867; font-size: 9px; line-height: 1.4; }
+.funnel-private-note .evidence-badge { flex: 0 0 auto; }
+@media (max-width: 1440px) and (min-width: 1151px) {
+  .quest-shell.with-presenter { grid-template-columns: 192px minmax(0, 1fr) 238px; }
+  .quest-shell.with-presenter .quest-rail { padding-left: 14px; padding-right: 14px; }
+  .quest-shell.with-presenter .quest-nav-item { min-height: 54px; }
+  .quest-shell.with-presenter .presenter-rail { padding: 22px 15px; }
+  .quest-shell.with-presenter .presenter-rail li { font-size: 12px; line-height: 1.55; }
+}

@@ -124,7 +124,7 @@ export default function Home() {
     ? { label: "RE:BOOST IMPACT", before: "87", after: "34", suffix: "위", detail: "게임(매출) 순위 53단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
     : performanceMetric === "users"
       ? { label: "USER RANK IMPACT", before: "69", after: "33", suffix: "위", detail: "이용자수 순위 36단계 개선", foot: "2026.07.16–07.31 · 사전등록~출시" }
-      : { label: "SEARCH PEAK", before: mapleSearchSummary.peak.toFixed(2), after: "", suffix: "", detail: "4게임 공통 기준 · 메이플M 최고 주간", foot: `NAVER DATALAB · ${mapleSearchSummary.peakWeek} · 최근 4주 ${mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}${mapleSearchSummary.firstToRecentChange.toFixed(1)}%` };
+      : { label: "SEARCH INTEREST PEAK", before: mapleSearchSummary.peak.toFixed(2), after: "", suffix: "", detail: "상대지수 · 4게임 공통 최대 100 기준", foot: `NAVER DATALAB · ${mapleSearchSummary.peakWeek} · 최근 4주 상대지수 ${mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}${mapleSearchSummary.firstToRecentChange.toFixed(1)}%` };
 
   const changeSection = (next: QuestSection) => setActive(next);
   const moveSection = (direction: number) => {
@@ -212,7 +212,7 @@ export default function Home() {
             </Tabs>
             <div className="game-filter" aria-label="게임 필터">
               {games.map((game) => <button key={game} className={performanceGame === game ? "selected" : ""} onClick={() => setPerformanceGame(game)}>{game === "ALL" ? "ALL" : game.replace(" 모바일", "M").replace("메이플스토리M", "메이플M")}</button>)}
-              {performanceMetric === "search" && <span className="filter-context">검색 관심: 4게임 · 주간 · 공통 최대값 100 · 상대지수</span>}
+              {performanceMetric === "search" && <span className="filter-context">검색 관심 상대지수: 4게임 · 주간 · 공통 최대 100</span>}
             </div>
           </div>
           <div className={`performance-grid ${performanceMetric === "search" ? "is-search-mode" : ""}`}>
@@ -222,7 +222,8 @@ export default function Home() {
             <aside className="performance-insights">
               <div className="impact-card">
                 <span className="eyebrow">{primaryEvidence.label}</span>
-                {performanceGame !== "ALL" && performanceGame !== "메이플스토리M" && <span className="impact-context">메이플M 기준 KPI</span>}
+                {performanceMetric === "search" && <span className="impact-context">상대지수 · 공통 최대 100</span>}
+                {performanceMetric !== "search" && performanceGame !== "ALL" && performanceGame !== "메이플스토리M" && <span className="impact-context">MAPLE M BASELINE</span>}
                 <div className={`impact-number ${performanceMetric === "search" ? "search-signal" : ""}`}><b>{primaryEvidence.before}</b>{primaryEvidence.after && <><ArrowUpRight size={25} /><b>{primaryEvidence.after}</b><small>{primaryEvidence.suffix}</small></>}</div>
                 <p>{primaryEvidence.detail}</p>
                 <div className="impact-foot">{primaryEvidence.foot}</div>
@@ -235,7 +236,7 @@ export default function Home() {
           </div>
           <div className="channel-strip">
             <span className="strip-label">CHANNEL CROSS-CHECK</span>
-            <MiniLine label="NAVER DATALAB" tone="gold">{mapleSearchSummary.first4.toFixed(2)} → {mapleSearchSummary.recent4.toFixed(2)} <small>최근 4주 {mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}{mapleSearchSummary.firstToRecentChange.toFixed(1)}%</small></MiniLine>
+            <MiniLine label="NAVER DATALAB" tone="gold">{mapleSearchSummary.first4.toFixed(2)} → {mapleSearchSummary.recent4.toFixed(2)} <small>상대지수 · 최근 4주 {mapleSearchSummary.firstToRecentChange >= 0 ? "+" : ""}{mapleSearchSummary.firstToRecentChange.toFixed(1)}%</small></MiniLine>
             <MiniLine label="OFFICIAL YOUTUBE" tone="blue">128편 <small>중앙값 32,148회</small></MiniLine>
             <MiniLine label="BIGKinds NEWS" tone="purple">85건 <small>원자료 396건 중 21.5%</small></MiniLine>
             <MiniLine label="MARKET RESPONSE" tone="green">TOP 30 <small>2026.08.10 · 29위</small></MiniLine>
@@ -251,7 +252,7 @@ export default function Home() {
             <div className="battle-stamp"><Swords size={18} /> VS</div>
           </div>
           <div className="battle-controls">
-            <div className="battle-board-caption"><span>FOUR-CHART COMPARISON</span><b>공통 기간 · 공통 순위 축</b></div>
+            <div className="battle-board-caption"><span>FOUR-CHART COMPARISON</span><b>공통 기간 · 공통 순위 축</b><small>경쟁 압력 → 사례 → 대응 가설</small></div>
             <div className="battle-toggle-group">
               <button className={battleMetric === "revenue" ? "selected" : ""} onClick={() => setBattleMetric("revenue")}>게임 순위</button>
               <button className={battleMetric === "users" ? "selected" : ""} onClick={() => setBattleMetric("users")}>이용자수</button>
@@ -291,7 +292,7 @@ export default function Home() {
       {active === "retention" && (
         <section className="stage-section retention-section">
           <div className="section-title-row">
-            <div><SectionEyebrow index="03" label="RETENTION" /><h2>성장지원은 강점, 복귀·콜라보는 공백</h2><p>후킹 유형의 보유 격차와 화제성·평판·검색 잔존 신호를 한 화면에서 비교합니다.</p></div>
+            <div><SectionEyebrow index="03" label="RETENTION" /><h2>성장지원은 강점, 복귀·콜라보는 공백</h2><p>후킹 유형의 보유 격차와 화제성·평판·검색 관심 프록시를 한 화면에서 비교합니다.</p></div>
             <div className="section-flag"><Layers3 size={17} /><span>SKILL BOOK · 4 TYPES</span></div>
           </div>
           <div className="retention-grid">
@@ -308,8 +309,8 @@ export default function Home() {
               <div className="return-card"><span className="eyebrow">ALWAYS-ON RETURN</span><h3>아이온2의 새싹뱃지</h3><p>28일 미접속 후 자동 보상. 이벤트 타이밍과 무관하게 복귀 채널을 유지합니다.</p></div>
             </div>
           </div>
-          <div className="retention-chart-card wide-retention-chart">
-            <div className="card-header"><span className="eyebrow">SEARCH-INTEREST RETENTION</span><h3>Peak 이후 검색 관심 잔존율</h3><span className="proxy-note">자체 peak 대비 · 4주 간격 · 프록시</span></div>
+            <div className="retention-chart-card wide-retention-chart">
+            <div className="card-header"><span className="eyebrow">SEARCH INTEREST PROXY</span><h3>Peak 이후 검색 관심 잔존 프록시</h3><span className="proxy-note">실제 사용자 리텐션 아님 · 자체 peak 대비 · 4주 간격</span></div>
             <div className="retention-svg-wrap">
               <svg className="retention-svg" viewBox="0 0 570 194" role="img" aria-label="게임별 peak 이후 검색 관심 잔존율 추이">
                 {[0, 20, 40, 60, 80, 100].map((tick) => <g key={tick}><line x1="44" x2="556" y1={171 - tick * 1.34} y2={171 - tick * 1.34} stroke="#E5DED3" /><text x="28" y={175 - tick * 1.34} fill="#86808A" fontSize="10">{tick}</text></g>)}
@@ -328,7 +329,7 @@ export default function Home() {
               </svg>
             </div>
             <div className="retention-legend">{searchInterestGames.map(({ game, short, color }) => <span key={game} style={{ "--retention-color": color } as React.CSSProperties}>{short} {retentionLegend(game)}</span>)}</div>
-            <p className="retention-scope-note">M0=peak · M1~M5=각 +4주 · 종료%=마지막 관측치(보간 없음)</p>
+            <p className="retention-scope-note">검색 관심 프록시 · 실제 사용자 리텐션 아님 · M0=peak · M1~M5=각 +4주 · 종료%=마지막 관측치(보간 없음)</p>
           </div>
           <div className="store-card">
             <div className="store-summary"><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>
@@ -348,14 +349,15 @@ export default function Home() {
           </div>
           <div className="monetization-layout">
             <section className="funnel-card" aria-label="MMORPG 매출 퍼널 분석 프레임">
-              <div className="funnel-card-head"><div><span className="eyebrow">MMORPG REVENUE FUNNEL</span><h3>공개 관측이 가능한 3단계</h3></div><EvidenceBadge status="confirmed" /></div>
+              <div className="funnel-card-head"><div><span className="eyebrow">MMORPG REVENUE FUNNEL</span><h3>공개 구조 기반 결제 여정 가설</h3></div><EvidenceBadge status="confirmed" /></div>
               <div className="user-funnel-context" aria-label="MMORPG 유저 퍼널과 공개 관측 결제 구간">
-                <p>전체 MMORPG 유저 퍼널 중 공개 근거로 관측 가능한 결제 구간을 집중 분석합니다.</p>
+                <p>공개 근거에서 확인 가능한 상품 구조를 결제 여정 가설로 배열합니다.</p>
                 <div className="user-funnel" role="list">
                   {["유입", "설치", "캐릭터 생성", "첫 접속", "초반 성장", "콘텐츠 경험", "재방문", "첫 결제", "반복 결제", "고가치 결제"].map((step, index) => (
                     <span key={step} className={index >= 7 ? `monetization-step step-${index - 7}` : "journey-step"} role="listitem">{step}</span>
                   ))}
                 </div>
+                <div className="funnel-private-note"><EvidenceBadge status="private" /><span>실제 전환율·구매자 수·ARPU·ARPPU는 내부 검증 필요</span></div>
               </div>
               <div className="funnel-flow">
                 {funnelStages.map((stage) => <article className={`funnel-stage ${stage.id}`} key={stage.id}><span>{stage.index}</span><h4>{stage.title}</h4><p>{stage.detail}</p><ul>{stage.mechanisms.map((mechanism) => <li key={mechanism}>{mechanism}</li>)}</ul></article>)}

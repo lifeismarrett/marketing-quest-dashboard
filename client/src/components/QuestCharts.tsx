@@ -162,7 +162,7 @@ function SearchTooltip({ active, payload, label }: any) {
     <div className="chart-tooltip">
       <b>{label}</b>
       {payload.map((entry: any) => <span key={entry.name} style={{ color: entry.color }}>{entry.name} <strong>{Number(entry.value).toFixed(2)}</strong></span>)}
-      <em>상대·정규화 관심 지수</em>
+      <em>상대지수 · 4게임 공통 최대 100 기준 · 절대 검색량 아님</em>
     </div>
   );
 }
@@ -178,7 +178,7 @@ export function SearchInterestChart({ game = "ALL", chartHeight = 264 }: { game?
           <span className="eyebrow">SEARCH SIGNAL</span>
           <h3>NAVER DataLab 4사 검색 관심</h3>
         </div>
-        <span className="rank-rule neutral">공통 100 기준 · 상대지수</span>
+        <span className="rank-rule neutral">4게임 공통 최대 100 · 상대지수</span>
       </div>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <LineChart data={SEARCH_INTEREST_4GAME_DATA as unknown as any[]} margin={{ top: 12, right: 10, bottom: 3, left: -4 }}>
