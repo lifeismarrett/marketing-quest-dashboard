@@ -20,6 +20,20 @@
 
 발표 직후 교수·실무자 Q&A 대응 자료입니다. 공개 근거와 실제 성과를 분리하고, 내부 검증이 필요한 영역을 명확히 하며, 과도한 인과·성과 해석을 방지합니다.
 
+## V2 TEAM DATA — 신규 팀 자료 대조본
+
+기존 최종 발표자료를 덮어쓰지 않고, 팀원이 제공한 공시·Meta·YouTube 자료를 별도 evidence layer로 대조한 V2 작업본입니다. 공시 매출은 기업·플랫폼 범위로만, Meta는 소재 활동 proxy로, YouTube는 표본 분포와 수집 프로토콜 검토용으로 사용합니다.
+
+- [`V2 폴더`](./_V2_TEAM_DATA/)
+- [`V2 발표대본`](./_V2_TEAM_DATA/01_마케팅퀘스트_발표대본_V2_TEAM_DATA.md)
+- [`V2 Executive Brief PDF`](./_V2_TEAM_DATA/02_마케팅퀘스트_Executive_Brief_V2_TEAM_DATA.pdf)
+- [`V2 Executive Brief Typst 원본`](./_V2_TEAM_DATA/02_마케팅퀘스트_Executive_Brief_V2_TEAM_DATA.typ)
+- [`V2 Q&A Defense Book`](./_V2_TEAM_DATA/03_마케팅퀘스트_QA_DEFENSE_BOOK_V2_TEAM_DATA.md)
+- [`NEW DATA AUDIT`](./_V2_TEAM_DATA/audit/NEW_DATA_AUDIT.md)
+- [`CONFLICT REPORT`](./_V2_TEAM_DATA/audit/CONFLICT_REPORT.md)
+- [`00~06 V2 Patch Plan`](./_V2_TEAM_DATA/audit/00-06_DASHBOARD_PATCH_PLAN_V2.md)
+- [`Source Dictionary`](./_V2_TEAM_DATA/audit/TEAM_DATA_SOURCE_DICTIONARY.md)
+
 ## Live Dashboard
 
 [https://mktquestdash-kfhuh6sd.manus.space/](https://mktquestdash-kfhuh6sd.manus.space/)

@@ -17,6 +17,12 @@
 | Presentation Script | [`presentation/01_마케팅퀘스트_발표대본_최종본.pdf`](./presentation/01_마케팅퀘스트_발표대본_최종본.pdf) |
 | Executive Brief | [`presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf`](./presentation/02_마케팅퀘스트_임원용_핵심요약_최종본.pdf) |
 | Q&A Defense Book | [`presentation/03_마케팅퀘스트_질의응답_대응자료_최종본.pdf`](./presentation/03_마케팅퀘스트_질의응답_대응자료_최종본.pdf) |
+| V2 Team Data | [`presentation/_V2_TEAM_DATA/`](./presentation/_V2_TEAM_DATA/) |
+| V2 Presentation Script | [`V2 발표대본 PDF`](./presentation/_V2_TEAM_DATA/01_마케팅퀘스트_발표대본_V2_TEAM_DATA.pdf) · [`편집 원본`](./presentation/_V2_TEAM_DATA/01_마케팅퀘스트_발표대본_V2_TEAM_DATA.md) |
+| V2 Executive Brief | [`V2 Executive Brief PDF`](./presentation/_V2_TEAM_DATA/02_마케팅퀘스트_Executive_Brief_V2_TEAM_DATA.pdf) |
+| V2 Q&A Defense Book | [`V2 Q&A PDF`](./presentation/_V2_TEAM_DATA/03_마케팅퀘스트_QA_DEFENSE_BOOK_V2_TEAM_DATA.pdf) · [`편집 원본`](./presentation/_V2_TEAM_DATA/03_마케팅퀘스트_QA_DEFENSE_BOOK_V2_TEAM_DATA.md) |
+| New Data Audit | [`NEW_DATA_AUDIT`](./presentation/_V2_TEAM_DATA/audit/NEW_DATA_AUDIT.md) |
+| Conflict Report | [`CONFLICT_REPORT`](./presentation/_V2_TEAM_DATA/audit/CONFLICT_REPORT.md) |
 | Research | [`research/`](./research/) |
 | Data Validation | [`research/datalab/`](./research/datalab/) |
 | Project Documentation | [`docs/`](./docs/) |
@@ -46,6 +52,10 @@
 | 관측 내 최고 게임(매출) 순위 | 21위 / 2026-08-03 | 관측 기간 내 최고 순위 |
 | Search Peak | 0.90 / 2026-07-27 | 절대 검색량이 아닌 상대지수 |
 | 최근 4주 상대지수 | 0.23 → 0.49 / +117.2% | 검색 관심의 상대 변화이며 매출 효과가 아님 |
+
+## V2 Team Data Scope
+
+팀원이 제공한 재무공시·Meta 광고 소재·YouTube 표본은 기존 39주 MobileIndex/NAVER DataLab 결과를 대체하지 않는 별도 evidence layer입니다. 공시 매출은 기업·사업부문·플랫폼 범위로, Meta는 소재 활동 proxy로, YouTube는 표본 분포와 수집 프로토콜 검토용으로만 사용합니다. 게임별 모바일 매출·ROAS·유저 획득·매출 인과는 공개자료로 확정하지 않습니다. 자세한 판정은 [`V2 NEW DATA AUDIT`](./presentation/_V2_TEAM_DATA/audit/NEW_DATA_AUDIT.md)와 [`V2 CONFLICT REPORT`](./presentation/_V2_TEAM_DATA/audit/CONFLICT_REPORT.md)에 기록했습니다.
 
 ## Evidence Principle
 
