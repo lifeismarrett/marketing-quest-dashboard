@@ -11,13 +11,13 @@
 | Repository | https://github.com/lifeismarrett-droid/marketing-quest-dashboard |
 | Live Dashboard | https://mktquestdash-kfhuh6sd.manus.space/ |
 | V2 결과물 경로 | `presentation/_V2_TEAM_DATA/` |
-| 기준 checkpoint | **최종 제출 기준 `9624af8b`** — `b4293e70` 이후 GPT AUDIT 정정·PDF 재생성·공개 런타임 회귀 검증을 반영한 최신 checkpoint |
+| 기준 checkpoint | **최종 제출 기준 `88473b63`** — `b4293e70` 이후 GPT AUDIT 정정·PDF 재생성·공개 런타임 회귀 검증을 반영한 최신 checkpoint |
 | 작업 완료 시각 | 2026-08-27 JST 세션 기준 |
 | 현재 발표 기준 | FINAL REVISION 13분30초~14분 대본, 공개 대시보드 00~06, 2페이지 A4 Executive Brief, Q&A Defense Book |
 | 비교 기준 유지 | **4 Games / 39 Weeks 유지**. V1 핵심 프레임을 변경하지 않음 |
 | V2의 성격 | 대시보드 실행 코드·runtime data를 덮어쓰지 않는 별도 팀 자료 evidence layer |
 
-**Version control:** `4668a552`는 V2 evidence layer·발표자료를 저장한 이전 checkpoint, `b4293e70`은 그 위에 GPT용 HANDOFF를 저장한 이전 checkpoint입니다. `9624af8b`는 그 후 GPT AUDIT 정정, V2 PDF 재생성, 공개 런타임 회귀 기록까지 반영한 최신 checkpoint이며 최종 제출 기준입니다.
+**Version control:** `4668a552`는 V2 evidence layer·발표자료를 저장한 이전 checkpoint, `b4293e70`은 그 위에 GPT용 HANDOFF를 저장한 이전 checkpoint입니다. `88473b63`는 그 후 GPT AUDIT 정정, V2 PDF 재생성, 공개 런타임 회귀 기록까지 반영한 최신 checkpoint이며 최종 제출 기준입니다.
 
 V1의 canonical 결과는 2025-11-17~2026-08-10, 39주, 4게임, MobileIndex 순위와 NAVER DataLab 공통 상대지수입니다. V2 자료는 기업 공시, Meta 소재 타임라인, YouTube 표본을 보강하지만 V1 수치를 재계산하거나 교체하지 않습니다.
 
