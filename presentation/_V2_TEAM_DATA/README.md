@@ -10,6 +10,7 @@
 | `02_마케팅퀘스트_Executive_Brief_V2_TEAM_DATA.pdf` | 기존 2페이지 A4 Executive Brief의 V2 scope note·evidence boundary 보강본 |
 | `02_마케팅퀘스트_Executive_Brief_V2_TEAM_DATA.typ` | 위 PDF의 편집 가능한 canonical Typst 원본 |
 | `03_마케팅퀘스트_QA_DEFENSE_BOOK_V2_TEAM_DATA.md` / `.pdf` | 기존 Q01~Q25·Critical TOP 5를 보존하고 Q26~Q30 신규 자료 방어 문답을 추가한 편집 원본과 배포 PDF |
+| `MARKETING_QUEST_V2_HANDOFF.md` | GPT가 저장소 없이도 V1·V2 상태·근거·충돌·검증 범위를 재검토할 수 있는 단일 인수인계 문서 |
 | `audit/NEW_DATA_AUDIT.md` | 7개 입력의 추출·재계산·비교 가능성 감사 |
 | `audit/CONFLICT_REPORT.md` | 기존 결과와 신규 자료의 충돌·보강·제외 판정 |
 | `audit/00-06_DASHBOARD_PATCH_PLAN_V2.md` | 대시보드 섹션별 안전한 V2 패치 계획 |
