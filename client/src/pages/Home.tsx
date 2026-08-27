@@ -11,6 +11,7 @@ import { RankTrendChart, SearchInterestChart, type GameName, type RankMetric } f
 import { battleCases, verifiedEvents } from "@/data/dashboardData";
 import { evidenceMeta, funnelStages, monetizationRows, type EvidenceStatus } from "@/data/monetizationData";
 import { SEARCH_INTEREST_GAMES, SEARCH_INTEREST_RETENTION, SEARCH_INTEREST_SUMMARY } from "@/data/searchInterestData";
+import { metaActivitySnapshot, platformScopeRows, teamDataRegister, teamMergeCards, teamMergeEvidenceRule, teamMergeHoldItems, type TeamMergeClassification } from "@/data/teamMergedPreviewData";
 
 const sections: QuestSection[] = ["home", "performance", "battle", "retention", "monetization", "strategy", "clear"];
 const games: GameName[] = ["ALL", "메이플스토리M", "검은사막 모바일", "마비노기 모바일", "아이온2"];
@@ -102,6 +103,26 @@ function EvidenceBadge({ status }: { status: EvidenceStatus }) {
   return <span className={`evidence-badge ${status}`}>[{evidenceMeta[status].label}]</span>;
 }
 
+const teamMergeLabels: Record<TeamMergeClassification, string> = {
+  "ADD": "ADD",
+  "UPDATE": "UPDATE",
+  "REPLACE CANDIDATE": "REPLACE CANDIDATE",
+  "APPENDIX ONLY": "APPENDIX ONLY",
+  "HOLD": "HOLD",
+};
+
+function TeamMergeBadge({ status }: { status: TeamMergeClassification }) {
+  return <span className={`team-merge-badge ${status.toLowerCase().replaceAll(" ", "-")}`}>{teamMergeLabels[status]}</span>;
+}
+
+function TeamMergePanel({ title, copy, children }: { title: string; copy: string; children?: React.ReactNode }) {
+  return <aside className="team-merge-panel">
+    <div className="team-merge-panel-head"><div><span className="eyebrow">TEAM MERGED PREVIEW</span><h3>{title}</h3></div><span className="merge-preview-chip">V2 LAYER</span></div>
+    <p>{copy}</p>
+    {children && <div className="team-merge-panel-body">{children}</div>}
+  </aside>;
+}
+
 function sectionFromQuery(): QuestSection {
   const requested = new URLSearchParams(window.location.search).get("section") as QuestSection | null;
   return requested && sections.includes(requested) ? requested : "home";
@@ -182,6 +203,10 @@ export default function Home() {
               <div><CircleDot size={15} /><b>DATA TRUST</b></div>
               <p>이벤트·케이스는 자체 리서치 이중검증, 마켓 순위는 39주 실측 기준. 해석은 상관과 인과를 구분합니다.</p>
             </div>
+            <TeamMergePanel title={teamMergeCards.overview.title} copy={teamMergeCards.overview.copy}>
+              <div className="team-merge-summary"><b>{teamDataRegister.length} TEAM INPUTS</b><span>ADD 2 · UPDATE 2 · APPENDIX 2 · HOLD 1</span></div>
+              <div className="team-method-strip">{teamMergeEvidenceRule.map((item) => <span key={item}>{item}</span>)}</div>
+            </TeamMergePanel>
           </div>
           <div className="mission-stats">
             <MetricPill label="COMPARISON" value="4 GAMES" detail="메이플M + 경쟁작 3종" />
@@ -241,6 +266,9 @@ export default function Home() {
             <MiniLine label="BIGKinds NEWS" tone="purple">85건 <small>원자료 396건 중 21.5%</small></MiniLine>
             <MiniLine label="MARKET RESPONSE" tone="green">TOP 30 <small>2026.08.10 · 29위</small></MiniLine>
           </div>
+          <TeamMergePanel title={teamMergeCards.performance.title} copy={teamMergeCards.performance.copy}>
+            <div className="team-scope-list">{platformScopeRows.slice(0, 2).map((item) => <div key={item.subject}><TeamMergeBadge status={item.status} /><b>{item.subject}</b><span>{item.mergedReading}</span></div>)}</div>
+          </TeamMergePanel>
         </section>
       )}
 
@@ -286,6 +314,10 @@ export default function Home() {
             {eventOnly && <div className="case-event-strip">{nearbyEvents.slice(-5).map((event) => <span key={event.id}><b>{event.date?.slice(5, 10)}</b>{event.name}</span>)}</div>}
           </section>
           <div className="collision-callout"><Compass size={17} /><b>4사 캘린더 대조</b><span>이벤트 일정을 정기 갱신하고, 같은 기간 경쟁사 이벤트의 수·규모로 Low / Mid / High 경쟁 압력을 판단합니다.</span><button onClick={() => setActive("strategy")}>대응 퀘스트 보기 <ArrowUpRight size={14} /></button></div>
+          <TeamMergePanel title={teamMergeCards.battle.title} copy={teamMergeCards.battle.copy}>
+            <div className="team-meta-snapshot">{metaActivitySnapshot.map((item) => <div key={item.game}><b>{item.game}</b><span>{item.rows}</span><small>{item.timing}</small><em>{item.platforms}</em></div>)}</div>
+            <p className="team-merge-hold">검색 결과 없음은 광고 미집행을 뜻하지 않으며, 재사용 수는 정의 확인 전 HOLD합니다.</p>
+          </TeamMergePanel>
         </section>
       )}
 
@@ -335,6 +367,9 @@ export default function Home() {
             <div className="store-summary"><span className="eyebrow">STORE REPUTATION</span><h3>평점 · 리뷰 규모 · 만족도 기반 잔존 신호</h3></div>
             <div className="store-table"><span>게임</span><span>GP 평점</span><span>GP 리뷰 수</span><span>앱스토어 평점</span><span>앱스토어 리뷰 수</span><b className="maple">메이플스토리M</b><b className="maple">4.6</b><b className="maple">18.8만</b><b className="maple">4.4</b><b className="maple">13.0만</b><b>검은사막 모바일</b><b>4.4</b><b>21.6만</b><b>4.2</b><b>6.0만</b><b>마비노기 모바일</b><b>2.8</b><b>3.6만</b><b>3.3</b><b>0.83만</b><b>아이온2</b><b>2.9</b><b>0.7만</b><b>3.1</b><b>0.19만</b></div>
           </div>
+          <TeamMergePanel title={teamMergeCards.retention.title} copy={teamMergeCards.retention.copy}>
+            <div className="team-appendix-line"><TeamMergeBadge status="HOLD" /><span>기존 69×는 동일 주 공식 단일 영상 사례로 유지하며, 다중 영상 workbook 표본과 혼합하지 않습니다.</span></div>
+          </TeamMergePanel>
         </section>
       )}
 
@@ -374,6 +409,9 @@ export default function Home() {
                 <p>멤버십·데바 패스의 판매 구조는 <EvidenceBadge status="confirmed" />이며, 결제 전환·반복 구매율·고가치 결제 비중은 <EvidenceBadge status="private" />입니다.</p>
                 <div><span>멤버십·구독</span><span>첫 결제 구조</span><span>반복 구매 구조</span></div>
               </section>
+              <TeamMergePanel title={teamMergeCards.monetization.title} copy={teamMergeCards.monetization.copy}>
+                <div className="team-scope-list">{platformScopeRows.map((item) => <div key={item.subject}><TeamMergeBadge status={item.status} /><b>{item.subject}</b><span>{item.mergedReading}</span></div>)}</div>
+              </TeamMergePanel>
             </aside>
           </div>
           <section className="monetization-map" aria-label="4개 게임 BM 및 수익화 비교 맵">
@@ -406,6 +444,9 @@ export default function Home() {
             <div className="roadmap-line"><div className="roadmap-step blue"><i>1</i><b>단기 · 1개월</b><span>커뮤니티 모니터링 · 이벤트 캘린더 트래킹</span></div><div className="roadmap-step gold"><i>2</i><b>중기 · 1분기</b><span>타이밍 관리 체계 · 콜라보 후보 롱리스트</span></div><div className="roadmap-step purple"><i>3</i><b>장기 · 반기</b><span>상시복귀지원 · IP 콜라보 1건 이상</span></div><div className="roadmap-step green"><i>4</i><b>중장기 · 1년+</b><span>시스템 리마스터 로드맵 착수</span></div></div>
           </div>
           <div className="risk-bar"><AlertTriangle size={16} /><b>RISK MANAGEMENT</b><span>4개 전략 동시 착수 시 리소스가 분산될 수 있습니다. 제안 KPI는 다수가 상관관계 지표이므로 매출·DAU 등 직접 지표는 별도 검증이 필요합니다.</span></div>
+          <TeamMergePanel title={teamMergeCards.strategy.title} copy={teamMergeCards.strategy.copy}>
+            <div className="team-appendix-line"><TeamMergeBadge status="ADD" /><span>Meta active-ad capture: 메이플M 8행 · 검은사막 6행 · 마비노기 3행 · 아이온2 결과 행 1. 활동 복기와 후속 광고 export 요구에만 사용합니다.</span></div>
+          </TeamMergePanel>
         </section>
       )}
 
@@ -430,6 +471,10 @@ export default function Home() {
               {["시즌 단위 정례 업데이트 체계 도입", "이벤트 공백기 최소화", "경쟁사 이벤트 캘린더 선제 모니터링", "IP 콜라보형 채널 신설 검토", "상시복귀지원 도입 검토", "강점 자산(성장지원형 · 평점 신뢰도) 강화"].map((item, index) => <div className="clear-item" key={item}><span>{index + 1}</span><b>{item}</b></div>)}
               <div className="clear-item final"><span>7</span><b>검색 관심 · 복귀 니즈 반등 신호를 지속 모니터링</b></div>
             </div>
+          </section>
+          <section className="clear-team-merge" aria-label="TEAM DATA 통합 결과">
+            <div><span className="eyebrow-light">TEAM MERGED PREVIEW</span><h3>{teamMergeCards.clear.title}</h3><p>{teamMergeCards.clear.copy}</p></div>
+            <div className="clear-merge-states"><span><TeamMergeBadge status="ADD" /> 범위 근거 추가</span><span><TeamMergeBadge status="UPDATE" /> 플랫폼·회계 해석 보완</span><span><TeamMergeBadge status="APPENDIX ONLY" /> 표본 원문 유지</span><span><TeamMergeBadge status="HOLD" /> 직접 성과 해석 보류</span></div>
           </section>
           <div className="clear-footer"><div><b>THE NEXT QUEST</b><span>공개 BM 구조와 시장 반응의 <em>동시 관측 신호</em>를 벤치마킹 후보로 삼되, 내부 결제 데이터 확인 후 최종 검증한다.</span></div><button onClick={() => setActive("home")}>QUEST COMPLETE <ArrowUpRight size={15} /></button></div>
         </section>
