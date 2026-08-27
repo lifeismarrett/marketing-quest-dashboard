@@ -183,14 +183,14 @@ export default function Home() {
     >
       {active === "home" && (
         <section className="stage-section mission-section">
-          <img className="mission-bg" src="/manus-storage/marketing-quest-hero_afbd5ac2.png" alt="" aria-hidden="true" />
-          <img className="mission-ring" src="/manus-storage/magic_circle_gold_55178ddb.png" alt="" aria-hidden="true" />
+          <img className="mission-bg" src="/manus-storage/marketing-quest-presentation-texture_95295e9f.png" alt="" aria-hidden="true" />
+          <img className="mission-ring" src="/manus-storage/marketing-quest-sigil_903d7149.png" alt="" aria-hidden="true" />
           <div className="mission-main">
             <SectionEyebrow index="00" label="MISSION BRIEFING" />
             <div className="mission-kicker">MARKETING QUEST</div>
             <h1>메이플스토리M<br /><em>경쟁 벤치마킹</em> 대시보드</h1>
             <p className="mission-copy">경쟁 MMORPG 3종의 이벤트, 마켓 순위, 채널 반응과 리텐션 후킹을 연결해 <b>다음 마케팅 퀘스트</b>를 도출합니다.</p>
-            <Button className="start-quest" onClick={() => setActive("performance")}><Play size={15} fill="currentColor" /> START QUEST</Button>
+            <Button className="start-quest" onClick={() => setActive("performance")}><Play size={15} fill="currentColor" /> NEXT DECISION BRIEF</Button>
           </div>
           <div className="mission-side">
             <div className="roster-card">
@@ -267,6 +267,7 @@ export default function Home() {
             <MiniLine label="MARKET RESPONSE" tone="green">TOP 30 <small>2026.08.10 · 29위</small></MiniLine>
           </div>
           <TeamMergePanel title={teamMergeCards.performance.title} copy={teamMergeCards.performance.copy}>
+            <div className="scope-takeaway">공시 범위와 MobileIndex mobile rank는 동일 지표가 아니므로 직접 합산/비교할 수 없습니다.</div>
             <div className="team-scope-list">{platformScopeRows.slice(0, 2).map((item) => <div key={item.subject}><TeamMergeBadge status={item.status} /><b>{item.subject}</b><span>{item.mergedReading}</span></div>)}</div>
           </TeamMergePanel>
         </section>
@@ -274,7 +275,7 @@ export default function Home() {
 
       {active === "battle" && (
         <section className="stage-section battle-section">
-          <img className="battle-wreath" src="/manus-storage/graph_vs_wreath_6ef46ce4.png" alt="" aria-hidden="true" />
+          <img className="battle-wreath" src="/manus-storage/marketing-quest-sigil_903d7149.png" alt="" aria-hidden="true" />
           <div className="section-title-row">
             <div><SectionEyebrow index="02" label="COMPETITOR BATTLE" /><h2>동시 이벤트 구간은 선제 관리 대상</h2><p>동일 구간의 이벤트와 순위 움직임을 대조합니다. 직접 인과가 아닌 연관 움직임으로 해석합니다.</p></div>
             <div className="battle-stamp"><Swords size={18} /> VS</div>
@@ -315,6 +316,7 @@ export default function Home() {
           </section>
           <div className="collision-callout"><Compass size={17} /><b>4사 캘린더 대조</b><span>이벤트 일정을 정기 갱신하고, 같은 기간 경쟁사 이벤트의 수·규모로 Low / Mid / High 경쟁 압력을 판단합니다.</span><button onClick={() => setActive("strategy")}>대응 퀘스트 보기 <ArrowUpRight size={14} /></button></div>
           <TeamMergePanel title={teamMergeCards.battle.title} copy={teamMergeCards.battle.copy}>
+            <div className="team-evidence-priority">SECONDARY EVIDENCE · NOT A PERFORMANCE KPI</div>
             <div className="team-meta-snapshot">{metaActivitySnapshot.map((item) => <div key={item.game}><b>{item.game}</b><span>{item.rows}</span><small>{item.timing}</small><em>{item.platforms}</em></div>)}</div>
             <p className="team-merge-hold">검색 결과 없음은 광고 미집행을 뜻하지 않으며, 재사용 수는 정의 확인 전 HOLD합니다.</p>
           </TeamMergePanel>
@@ -452,8 +454,8 @@ export default function Home() {
 
       {active === "clear" && (
         <section className="stage-section clear-section">
-          <img className="clear-bg" src="/manus-storage/marketing-quest-clear_bba3a96d.png" alt="" aria-hidden="true" />
-          <img className="clear-star" src="/manus-storage/fantasy_ornament_star_ffc3f9b9.png" alt="" aria-hidden="true" />
+          <img className="clear-bg" src="/manus-storage/marketing-quest-paper-map_210ac48e.png" alt="" aria-hidden="true" />
+          <img className="clear-star" src="/manus-storage/marketing-quest-sigil_903d7149.png" alt="" aria-hidden="true" />
           <div className="clear-top"><span className="clear-badge"><Check size={15} /> QUEST CLEAR</span><SectionEyebrow index="06" label="FINAL DIRECTION" /><h2>결론 및 전략 방향</h2><p>공개 BM 구조 기준 벤치마킹 후보와 시장 반응의 동시 관측 신호, 리텐션 후킹 비교를 구분한 실행 우선순위입니다.</p></div>
           <section className="revenue-findings" aria-label="5개 매출 발견">
             <div className="clear-block-head">

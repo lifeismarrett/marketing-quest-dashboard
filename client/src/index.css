@@ -1,4 +1,4 @@
-/* Quest Console Atelier: ivory analytical surfaces, navy command states, ember-gold quest accents. */
+/* Quest Console Atelier: navy command rail, parchment analysis canvas, ember-gold signal accents; TEAM DATA remains visually secondary to primary charts. */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
@@ -171,9 +171,74 @@ button:focus-visible { outline: 3px solid rgba(243, 181, 66, .6); outline-offset
 
 @media (max-width: 1150px) { .quest-shell, .quest-shell.with-presenter { grid-template-columns: 192px minmax(0, 1fr); }.quest-shell.with-presenter .presenter-rail { display: none; }.quest-rail { padding-left: 14px; padding-right: 14px; }.presentation-stage { padding-left: 18px; padding-right: 18px; }.section-title-row, .control-row, .battle-controls { padding-left: 22px; padding-right: 22px; }.performance-grid, .battle-grid, .retention-grid, .strategy-layout { padding-left: 22px; padding-right: 22px; }.channel-strip, .store-card, .roadmap-card, .risk-bar, .collision-callout { margin-left: 22px; margin-right: 22px; }.channel-strip { padding-left: 0; padding-right: 0; }.mission-section { padding-left: 36px; padding-right: 36px; }.mission-stats { grid-template-columns: repeat(2, 1fr); }.retention-grid { grid-template-columns: minmax(0, 1fr) 230px; }.battle-grid { grid-template-columns: minmax(0, 1fr) 290px; } }
 @media (max-width: 860px) { body { overflow-y: auto; }.quest-shell { display: block; }.quest-rail { position: relative; width: 100%; min-height: auto; height: auto; padding: 12px 16px; flex-direction: row; align-items: center; gap: 15px; }.quest-brand { padding: 0; border: 0; }.quest-brand span { display: none; }.quest-nav { display: flex; overflow-x: auto; gap: 5px; }.quest-nav-item { min-height: auto; display: block; padding: 9px 10px; white-space: nowrap; }.quest-nav-item .quest-index, .quest-nav-item small, .quest-line, .rail-caption, .rail-footer { display: none; }.quest-nav-item.is-active::before { left: 10px; top: auto; bottom: 0; width: calc(100% - 20px); height: 2px; border-radius: 2px; }.presentation-topbar { height: 54px; padding: 0 16px; }.topbar-title { font-size: 9px; }.key-hint { display: none; }.presentation-stage { padding: 13px; }.stage-section { height: auto; min-height: 720px; overflow: visible; }.section-title-row, .control-row, .battle-controls { padding-left: 18px; padding-right: 18px; }.section-title-row { gap: 10px; }.section-title-row p { font-size: 12px; }.performance-grid, .battle-grid, .retention-grid, .strategy-layout { display: flex; flex-direction: column; padding-left: 18px; padding-right: 18px; }.performance-insights { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }.impact-card { grid-row: span 2; }.channel-strip { grid-template-columns: repeat(2, 1fr); margin: 0 18px 18px; }.strip-label { grid-column: 1 / -1; }.battle-grid { min-height: auto; }.battle-chart-card { min-height: 360px; }.case-console { min-height: 300px; }.retention-grid { min-height: auto; }.hooking-card { min-height: 445px; }.retention-side { grid-template-columns: 1fr 1fr; }.store-card { grid-template-columns: 1fr; margin: 0 18px 18px; overflow-x: auto; }.store-table { min-width: 560px; }.strategy-layout { min-height: auto; }.quest-card-list { grid-template-columns: 1fr 1fr; }.roadmap-card, .risk-bar { margin-left: 18px; margin-right: 18px; }.roadmap-line { grid-template-columns: 1fr 1fr; }.mission-section { grid-template-columns: 1fr; padding: 30px 25px 20px; }.mission-side { justify-self: stretch; width: 100%; margin-top: 22px; }.mission-stats { grid-template-columns: repeat(2, 1fr); }.clear-section { padding: 32px 24px; }.clear-grid { grid-template-columns: 1fr; }.clear-item.final { grid-column: auto; }.clear-footer { align-items: start; flex-direction: column; } }
+
+/* Quest Console Atelier reinforcement: visual quest mechanics are carried by rules, nodes, frames, and restrained Ember accents—not labels alone. */
+.stage-section { background-image: linear-gradient(90deg, rgba(255,253,248,.94), rgba(255,253,248,.94)), url('/manus-storage/marketing-quest-paper-map_210ac48e.png'); background-size: cover; background-position: center; }
+.mission-section { background-image: none; }
+.mission-section::before { content: ""; position: absolute; z-index: 0; left: 55px; right: 55px; top: 31px; height: 1px; background: linear-gradient(90deg, var(--gold) 0 14%, rgba(26,37,76,.18) 14% 92%, var(--gold) 92%); opacity: .72; }
+.mission-main, .mission-side, .mission-stats { position: relative; z-index: 1; }
+.mission-main { padding-top: 17px; }
+.mission-main h1 { max-width: 710px; font-size: clamp(43px, 4.65vw, 66px); }
+.mission-copy { max-width: 570px; }
+.start-quest { min-width: 220px; justify-content: center; border: 1px solid rgba(243,181,66,.48); box-shadow: 0 10px 0 rgba(10,18,47,.13), 0 17px 26px rgba(26,37,76,.17); }
+.mission-side { gap: 10px; width: min(100%, 342px); transform: translateY(13px); }
+.roster-card, .trust-card, .team-merge-panel { position: relative; border-radius: 7px; box-shadow: none; background: rgba(255,253,248,.82); }
+.roster-card::before, .trust-card::before, .team-merge-panel::before { content: ""; position: absolute; left: 11px; right: 11px; top: 7px; height: 1px; background: linear-gradient(90deg, var(--gold) 0 20px, rgba(26,37,76,.16) 20px); opacity: .72; }
+.roster-card { border-color: rgba(26,37,76,.22); }
+.trust-card { opacity: .89; }
+.team-merge-panel { border-left: 3px solid var(--gold); }
+.mission-stats { position: relative; gap: 8px; padding-top: 31px; }
+.mission-stats::before { content: ""; position: absolute; left: 0; right: 0; top: 17px; height: 1px; background: repeating-linear-gradient(90deg, rgba(26,37,76,.28) 0 2px, transparent 2px 8px); }
+.metric-pill { position: relative; min-height: 87px; border-radius: 6px; border-color: rgba(26,37,76,.18); box-shadow: inset 0 0 0 1px rgba(255,255,255,.68); background: linear-gradient(135deg, rgba(255,253,248,.98), rgba(246,241,232,.9)); }
+.metric-pill::after { content: ""; position: absolute; right: 10px; top: 11px; width: 6px; height: 6px; border: 1px solid currentColor; opacity: .32; }
+.quest-brand { gap: 9px; }
+.quest-logo { width: 52px; height: 52px; filter: drop-shadow(0 7px 10px rgba(0,0,0,.34)); }
+.quest-brand span, .eyebrow-light { font-size: 9px; letter-spacing: .22em; }
+.quest-brand strong { margin-top: 2px; font-size: 20px; line-height: .94; letter-spacing: -.02em; }
+.quest-nav-item::after { content: ""; position: absolute; left: 16px; top: 25px; width: 7px; height: 7px; border: 1px solid rgba(255,255,255,.32); border-radius: 50%; background: #1a254c; }
+.quest-nav-item.is-active::after { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 0 3px rgba(243,181,66,.12); }
+.quest-index { visibility: hidden; }
+.main-chart-card, .battle-chart-card, .hooking-card, .retention-chart-card, .store-card, .roadmap-card, .quest-detail { border-radius: 7px; box-shadow: 0 8px 18px rgba(31,39,70,.045), inset 0 0 0 1px rgba(255,255,255,.7); }
+.main-chart-card, .battle-chart-card, .hooking-card, .retention-chart-card, .quest-detail { border-top-color: var(--navy); }
+.team-merge-panel { box-shadow: inset 0 0 0 1px rgba(255,255,255,.72); }
+.team-merge-panel .eyebrow, .merge-preview-chip { letter-spacing: .12em; }
+.presenter-toggle, .pager-controls button { border-radius: 5px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; scroll-behavior: auto !important; } }
+
+/* UI polish round: concise scope takeaway and staged Battle reading order preserve all existing data and controls. */
+.performance-section > .team-merge-panel { margin: 0 30px 22px; padding: 15px 17px 14px; border-top: 2px solid #d6b466; background: linear-gradient(105deg, #fffdf8 0%, #fbf6ec 100%); }
+.scope-takeaway { margin: 11px 0 10px; padding: 9px 11px 9px 13px; border-left: 3px solid var(--gold); background: #fff6e4; color: var(--navy); font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: -.02em; }
+.performance-section > .team-merge-panel .team-scope-list { padding-top: 1px; border-top: 1px solid #e3dacb; }
+.performance-section > .team-merge-panel .team-scope-list > div { padding-top: 7px; }
+.performance-section > .team-merge-panel .team-scope-list b { font-size: 10px; }
+.performance-section > .team-merge-panel .team-scope-list span:last-child { font-size: 10px; line-height: 1.45; }
+
+.battle-section .section-title-row, .battle-section .battle-controls { order: 0; }
+.battle-section .battle-board { order: 1; padding-bottom: 12px; }
+.battle-section .case-brief { order: 2; }
+.battle-section .collision-callout { order: 3; margin-bottom: 10px; }
+.battle-section > .team-merge-panel { order: 4; margin: 0 30px 20px; padding: 10px 14px 11px; border-top: 2px solid #c9a85b; background: #fbf8f0; }
+.battle-board .comparison-card:first-child { grid-column: 1 / -1; min-height: 164px; border-color: #bfa05a; background: linear-gradient(90deg, #fffdf8, #fbf5e8); }
+.battle-board .comparison-card:first-child .comparison-card-head span::after { content: " · PRIMARY PRESSURE VIEW"; color: #9a711f; font-size: 8px; letter-spacing: .08em; }
+.battle-board .comparison-card:not(:first-child) { min-height: 130px; opacity: .82; }
+.battle-board .comparison-card:not(:first-child).is-active { opacity: 1; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(243,181,66,.18), 0 10px 20px rgba(47,52,78,.1); }
+.battle-board .comparison-card:not(:first-child).is-active .comparison-card-head { color: #8d6213; }
+.case-brief { border-top: 2px solid var(--navy); background: #fffdf8; }
+.case-brief-head b::before { content: "03 · "; color: #a47b22; font-family: var(--font-mono); font-size: 9px; }
+.collision-callout { border-left: 3px solid var(--gold); }
+.team-evidence-priority { margin: 8px 0 7px; color: #8b6b2a; font: 8px/1.2 var(--font-mono); letter-spacing: .1em; }
+.battle-section > .team-merge-panel .team-meta-snapshot { gap: 5px; }
+.battle-section > .team-merge-panel .team-meta-snapshot > div { min-height: 54px; padding: 7px; border-radius: 5px; }
+.battle-section > .team-merge-panel .team-meta-snapshot b { font-size: 9px; }
+.battle-section > .team-merge-panel .team-meta-snapshot span { font-size: 11px; }
+.battle-section > .team-merge-panel .team-meta-snapshot small, .battle-section > .team-merge-panel .team-meta-snapshot em { font-size: 7px; }
+.battle-section > .team-merge-panel .team-merge-hold { margin: 7px 0 0; font-size: 8px; }
+
+@media (max-width: 1150px) { .performance-section > .team-merge-panel, .battle-section > .team-merge-panel { margin-left: 22px; margin-right: 22px; } }
+@media (max-width: 860px) { .performance-section > .team-merge-panel, .battle-section > .team-merge-panel { margin-left: 18px; margin-right: 18px; }.battle-board .comparison-card:first-child { grid-column: auto; }.battle-board .comparison-card:not(:first-child) { opacity: 1; } }
 /* Tactical-board reinforcement: every analytical section carries a subtle quest marker, mission tick and primary-evidence frame. */
 .section-eyebrow { position: relative; padding-left: 19px; }
-.section-eyebrow::before { content: ""; position: absolute; left: 0; width: 13px; height: 13px; background: url('/manus-storage/marketing-quest-logo_905746ed.png') center / contain no-repeat; filter: saturate(.86) contrast(1.08); }
+.section-eyebrow::before { content: ""; position: absolute; left: 0; width: 13px; height: 13px; background: url('/manus-storage/marketing-quest-live-logo_3cb00003.png') center / contain no-repeat; filter: saturate(.86) contrast(1.08); }
 .main-chart-card, .battle-chart-card, .hooking-card, .retention-chart-card, .quest-detail { position: relative; border-top: 4px solid var(--navy); }
 .main-chart-card::before, .battle-chart-card::before, .hooking-card::before, .retention-chart-card::before, .quest-detail::before { content: ""; position: absolute; z-index: 2; top: -4px; left: 20px; width: 66px; height: 4px; border-radius: 0 0 4px 4px; background: var(--gold); }
 .main-chart-card::after { content: "Q-01 // PRIMARY EVIDENCE"; position: absolute; right: 18px; top: 14px; color: #a47b22; font: 8px/1 var(--font-mono); letter-spacing: .07em; }

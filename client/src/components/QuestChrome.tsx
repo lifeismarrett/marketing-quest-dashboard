@@ -46,7 +46,7 @@ export function QuestChrome({
         <div className="quest-brand">
           <img
             className="quest-logo"
-            src="/manus-storage/marketing-quest-logo_905746ed.png"
+            src="/manus-storage/marketing-quest-live-logo_3cb00003.png"
             alt="MARKETING QUEST 심볼"
           />
           <div>
