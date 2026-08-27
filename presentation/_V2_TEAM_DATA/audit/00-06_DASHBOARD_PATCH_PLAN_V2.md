@@ -11,9 +11,9 @@
 | `00 개요` | `PUBLIC EVIDENCE → PERFORMANCE SEPARATION → INTERNAL VALIDATION → DECISION SCOPE`를 짧은 method strip으로 추가. | 7개 입력의 역할과 source-grade. | 신규 자료가 기존 성과를 증명한다고 말하지 않음. |
 | `01 성과` | 기존 39주 순위·DataLab KPI 유지. 공시 숫자는 `기업/사업부문 공개 매출` 보조 라벨과 함께 별도 카드 또는 appendix 링크로 배치. | NC 아이온2 공시 매출·플랫폼 scope. | 공시 매출을 MobileIndex rank 또는 네 게임 모바일 매출로 병합하지 않음. |
 | `02 경쟁 압력` | 기존 이벤트/순위 console 유지. `platform scope` 및 `comparison case set` 주석만 추가. | NC·펄어비스 플랫폼 구조. | 네 게임이 MMORPG 전체 또는 동일 플랫폼·동일 회계범주를 대표한다고 말하지 않음. |
-| `03 유저 반응` | 기존 Retention proxy·Store Reputation 유지. YouTube workbook은 `표본 화제성 appendix`로 연결. | YouTube 4시트 기술통계. | 조회수 총합/평균을 유저수·매출·리텐션 또는 69배 효과로 해석하지 않음. |
+| `03 유저 반응` | 기존 Retention proxy·Store Reputation 유지. YouTube workbook은 본문 KPI가 아닌 `표본 기술통계 appendix`로만 연결. | YouTube 4시트 기술통계. | 조회수 총합/평균을 유저수·매출·리텐션 또는 69배 효과로 해석하지 않음. |
 | `04 BM·매출 퍼널` | 기존 공개 BM `[확인]·[관측]·[비공개]` 유지. 공시는 상품 성과가 아니라 회사/플랫폼 사업범위 근거로만 표시. | NC/Pearl filings의 공개 플랫폼·수익 인식 범위. | 전환율·반복 결제율·ARPU·ARPPU·LTV를 공개자료로 채우지 않음. |
-| `05 실행 전략` | 기존 전략을 `검증 우선순위`로 유지. Meta는 소재 활동 proxy, YouTube는 channel validation 후보로 연결. | Meta 18행 및 YouTube sample. | 소재 수가 ROAS·매출 효과·광고 우위라는 결론을 만들지 않음. |
+| `05 실행 전략` | 기존 전략을 `검증 우선순위`로 유지. Meta는 `UA ACTIVITY SNAPSHOT` 소재 활동 proxy로 02 경쟁 압력 또는 05 실행 전략 appendix에만 연결하고, YouTube는 channel validation 후보 appendix로만 연결. | Meta 18행 및 YouTube sample. | 소재 수가 ROAS·매출 효과·광고 우위라는 결론을 만들지 않음. |
 | `06 결론` | 기존 5 REVENUE FINDINGS의 순서·의미 유지. 신규 자료는 `V2 validation appendix`와 scope warning으로만 요약. | 공시·광고·YouTube의 보강/한계. | 공개 데이터로 모든 매출 효과를 증명했다고 말하지 않음. |
 
 ## V2 narrative patch

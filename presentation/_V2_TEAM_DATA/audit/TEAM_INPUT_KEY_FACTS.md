@@ -6,9 +6,9 @@ All seven user-provided files were extracted: five DOCX filings, `메타광고_�
 
 ## NC filings
 
-`[NC]반기보고서(2026.08.14).docx` table 27/29 identifies `아이온2` under the `게임 > PC게임` grouping. Its values are `제30기 반기 208,673 / 16%`, `제29기 77,361 / 5%`, and no prior-year comparable value. The report also records the 2025.11 Korean/Taiwan launch and an item-specific licensing/royalty revenue recognition description. The same report calls the principal PC games including 아이온2 separately from mobile games such as 리니지M, 리니지2M, 리니지W.
+`[NC]반기보고서(2026.08.14).docx` table 27/29 identifies `아이온2` under the `게임 > PC게임` grouping. Its values are `제30기 반기 208,673백만원 / 16%`, `제29기 77,361백만원 / 5%`, and no prior-year comparable value. The report also records the 2025.11 Korean/Taiwan launch and an item-specific licensing/royalty revenue recognition description. The same report calls the principal PC games including 아이온2 separately from mobile games such as 리니지M, 리니지2M, 리니지W.
 
-`[NC]사업보고서(2026.03.18).docx` records 아이온2 launch on 2025.11.19, states 아이온2 supported PC and mobile platforms in its business narrative, and separately labels it a “신규 PC IP” in the 2025 business review. Table 27/28 reports 아이온2 77,361 and 5% for 제29기, with no prior-year value. It also reports consolidated 2025 revenue 1조 5,069억원 and PC-game revenue 4,309억원, but these are company/PC-category figures, not MapleStory M or Black Desert Mobile revenue.
+`[NC]사업보고서(2026.03.18).docx` records 아이온2 launch on 2025.11.19, states 아이온2 supported PC and mobile platforms in its business narrative, and separately labels it a “신규 PC IP” in the 2025 business review. Table 27/28 reports 아이온2 `77,361백만원 / 5%` for 제29기, with no prior-year value; the item-level revenue includes royalty revenue in the filing context. It also reports consolidated 2025 revenue 1조 5,069억원 and PC-game revenue 4,309억원, but these are company/PC-category figures, not MapleStory M or Black Desert Mobile revenue.
 
 ## Pearl Abyss filings
 
@@ -30,7 +30,7 @@ Recomputed raw-row summaries:
 
 | Game label in workbook | Rows | Start date range | Platform-known rows | Mean known platform count | Reuse-known rows | Numeric reuse sum | Result rows |
 |---|---:|---|---:|---:|---:|---:|---:|
-| 메이플M | 8 | 2026-08-20~2026-08-24 | 7 | 5.0 | 6 | 14.5 | 0 |
+| 메이플M | 8 | 2026-08-20~2026-08-24 | 7 | 5.0 | 6 | NEEDS VERIFICATION (재사용 수 정의 문제로 수치 사용 보류) | 0 |
 | 검은사막 | 6 | 2026-07-11~2026-08-04 | 4 | 3.0 | 2 | 4.0 | 0 |
 | 마비노기 | 3 | 2026-08-05~2026-08-06 | 3 | 5.0 | 0 | n/a | 0 |
 | 아이온2 | 1 | n/a | 0 | n/a | 0 | n/a | 1 |
