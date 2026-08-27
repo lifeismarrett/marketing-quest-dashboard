@@ -304,7 +304,7 @@ export default function Home() {
               <div className="ownership-row"><span>보유 개수 (4개 유형 중)</span><b className="maple">메이플M 2</b><b className="bdm">검은사막M 2</b><b className="mab">마비노기M 3</b><b className="aion">아이온2 3</b></div>
             </div>
             <div className="retention-side">
-              <div className="collab-gap-card"><span className="eyebrow">IP COLLAB GAP</span><h3>화제성 격차의 핵심</h3><div><b>69×</b><span>동일 시기 YouTube 조회수 격차<br />마비노기 모바일 산리오 사례 대비</span></div><p>IP 콜라보형은 메이플M의 확인된 공백입니다.</p></div>
+              <div className="collab-gap-card"><span className="eyebrow">SINGLE VIDEO CASE</span><h3>화제성 격차의 핵심</h3><div><b>69×</b><span>동일 시기 YouTube 조회수 격차<br />마비노기 모바일 산리오 사례 대비</span></div><p>동일 주 공식 YouTube 단일 영상 비교 사례입니다.<br />채널 전체 성과 또는 매출 효과를 의미하지 않습니다.</p></div>
               <div className="return-card"><span className="eyebrow">ALWAYS-ON RETURN</span><h3>아이온2의 새싹뱃지</h3><p>28일 미접속 후 자동 보상. 이벤트 타이밍과 무관하게 복귀 채널을 유지합니다.</p></div>
             </div>
           </div>
