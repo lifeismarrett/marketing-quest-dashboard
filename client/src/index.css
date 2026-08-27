@@ -236,6 +236,59 @@ button:focus-visible { outline: 3px solid rgba(243, 181, 66, .6); outline-offset
 
 @media (max-width: 1150px) { .performance-section > .team-merge-panel, .battle-section > .team-merge-panel { margin-left: 22px; margin-right: 22px; } }
 @media (max-width: 860px) { .performance-section > .team-merge-panel, .battle-section > .team-merge-panel { margin-left: 18px; margin-right: 18px; }.battle-board .comparison-card:first-child { grid-column: auto; }.battle-board .comparison-card:not(:first-child) { opacity: 1; } }
+
+/* Presentation layout polish: primary chart → KPI → channel cross-check → scope; roadmap stays inside the selected action brief. */
+.performance-section { height: auto; min-height: 0; overflow: visible; }
+.performance-grid { flex: 0 0 292px; min-height: 292px; align-items: stretch; }
+.performance-grid .main-chart-card { min-height: 292px; overflow: hidden; }
+.performance-grid .performance-insights { min-height: 292px; grid-template-rows: 1.3fr repeat(3, .57fr) .76fr; }
+.performance-grid .rank-chart-host { height: 232px !important; }
+.channel-strip { position: relative; z-index: 1; flex: 0 0 auto; padding-top: 2px; padding-bottom: 14px; }
+.performance-section > .team-merge-panel { flex: 0 0 auto; margin-top: 0; margin-bottom: 18px; }
+.performance-section > .team-merge-panel > p { margin-top: 6px; font-size: 9px; }
+.performance-section > .team-merge-panel .scope-takeaway { margin: 8px 0; padding: 7px 10px; font-size: 11px; }
+.performance-section > .team-merge-panel .team-scope-list { gap: 4px; }
+.performance-section > .team-merge-panel .team-scope-list > div { padding-top: 4px; }
+
+.strategy-section { height: auto; min-height: 0; overflow: visible; }
+.strategy-layout { align-items: stretch; flex: 0 0 auto; }
+.quest-detail { min-width: 0; }
+.quest-detail .roadmap-card { width: 100%; margin: 18px 0 0; padding: 13px 14px; border-color: #ddd3c4; box-shadow: none; }
+.quest-detail .roadmap-head { align-items: flex-start; }
+.quest-detail .roadmap-head h3 { max-width: 440px; font-size: 13px; line-height: 1.35; }
+.quest-detail .roadmap-line { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+.quest-detail .roadmap-step { min-height: 60px; padding: 8px 7px 7px 33px; }
+.quest-detail .roadmap-step i { left: 8px; top: 8px; width: 18px; height: 18px; }
+.quest-detail .roadmap-step span { font-size: 8px; }
+.strategy-section > .risk-bar { margin-top: 12px; }
+
+@media (max-width: 1440px) and (min-width: 1151px) {
+  .quest-shell.with-presenter .performance-section { min-width: 0; }
+  .quest-shell.with-presenter .performance-grid { grid-template-columns: minmax(0, 1fr) 234px; gap: 10px; flex-basis: 286px; min-height: 286px; }
+  .quest-shell.with-presenter .performance-grid .main-chart-card { min-height: 286px; }
+  .quest-shell.with-presenter .performance-grid .rank-chart-host { height: 222px !important; }
+  .quest-shell.with-presenter .performance-insights { min-height: 286px; }
+  .quest-shell.with-presenter .channel-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding-bottom: 11px; }
+  .quest-shell.with-presenter .channel-strip .strip-label { grid-column: 1 / -1; }
+  .quest-shell.with-presenter .performance-section > .team-merge-panel { margin-bottom: 14px; }
+  .quest-shell.with-presenter .strategy-layout { grid-template-columns: 192px minmax(0, 1fr); gap: 10px; }
+  .quest-shell.with-presenter .quest-card { padding: 10px 11px; }
+  .quest-shell.with-presenter .quest-detail { padding: 16px 17px; }
+  .quest-shell.with-presenter .quest-detail h3 { font-size: 23px; }
+  .quest-shell.with-presenter .quest-detail-columns { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quest-shell.with-presenter .quest-detail-columns > div:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: 48px repeat(3, minmax(0, 1fr)); gap: 6px; align-items: center; }
+  .quest-shell.with-presenter .quest-detail-columns > div:last-child .kpi-tag { margin: 0; padding: 6px; }
+  .quest-shell.with-presenter .quest-detail .roadmap-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quest-shell.with-presenter .strategy-section > .risk-bar { margin-top: 10px; }
+}
+
+@media (max-width: 860px) {
+  .performance-grid { flex-basis: auto; min-height: 0; }
+  .performance-grid .main-chart-card, .performance-grid .performance-insights { min-height: 0; }
+  .performance-grid .rank-chart-host { height: 268px !important; }
+  .channel-strip { padding-top: 0; }
+  .quest-detail .roadmap-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 /* Tactical-board reinforcement: every analytical section carries a subtle quest marker, mission tick and primary-evidence frame. */
 .section-eyebrow { position: relative; padding-left: 19px; }
 .section-eyebrow::before { content: ""; position: absolute; left: 0; width: 13px; height: 13px; background: url('/manus-storage/marketing-quest-live-logo_3cb00003.png') center / contain no-repeat; filter: saturate(.86) contrast(1.08); }
@@ -465,3 +518,12 @@ button:focus-visible { outline: 3px solid rgba(243, 181, 66, .6); outline-offset
 .clear-team-merge { display: grid; grid-template-columns: minmax(0, 1fr) 1.25fr; gap: 20px; margin: 15px 0 0; padding: 15px 17px; border: 1px solid rgba(236,204,104,.27); border-radius: 11px; background: rgba(255,255,255,.055); }.clear-team-merge h3 { margin: 5px 0 0; color: #fff2c5; font-size: 15px; letter-spacing: -.03em; }.clear-team-merge p { margin: 7px 0 0; color: #cdd4ed; font-size: 10px; line-height: 1.5; }.clear-merge-states { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: center; gap: 7px 10px; }.clear-merge-states > span { display: flex; align-items: center; gap: 5px; color: #e0e6f7; font-size: 9px; line-height: 1.3; }
 @media (max-width: 1150px) { .team-merge-panel { margin-left: 22px; margin-right: 22px; }.mission-side .team-merge-panel, .monetization-side .team-merge-panel { margin-left: 0; margin-right: 0; }.team-scope-list > div { grid-template-columns: auto 102px minmax(0, 1fr); }.team-meta-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }.clear-team-merge { margin-left: 22px; margin-right: 22px; } }
 @media (max-width: 760px) { .team-merge-panel { padding: 11px; }.team-merge-summary { align-items: flex-start; flex-direction: column; }.team-scope-list > div { grid-template-columns: auto minmax(0, 1fr); }.team-scope-list span:last-child { grid-column: 2; }.team-meta-snapshot { grid-template-columns: minmax(0, 1fr); }.clear-team-merge { grid-template-columns: minmax(0, 1fr); gap: 12px; }.clear-merge-states { grid-template-columns: minmax(0, 1fr); } }
+
+/* Presentation layout polish override: preserve source-line clearance in the narrowed Presenter canvas. */
+.performance-grid.is-search-mode { flex: 0 0 356px; min-height: 356px; }
+@media (max-width: 1440px) and (min-width: 1151px) {
+  .quest-shell.with-presenter .performance-grid.is-search-mode { flex-basis: 356px; min-height: 356px; grid-template-rows: 356px; }
+  .quest-shell.with-presenter .performance-grid.is-search-mode .main-chart-card { height: 326px; min-height: 326px; }
+  .quest-shell.with-presenter .performance-grid.is-search-mode .performance-insights { height: 356px; min-height: 356px; }
+  .quest-shell.with-presenter .performance-grid.is-search-mode + .channel-strip { margin-top: 0; }
+}

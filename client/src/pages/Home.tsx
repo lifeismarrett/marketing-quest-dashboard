@@ -242,7 +242,7 @@ export default function Home() {
           </div>
           <div className={`performance-grid ${performanceMetric === "search" ? "is-search-mode" : ""}`}>
             <div className={`main-chart-card ${performanceMetric === "search" ? "search-chart-card" : ""}`}>
-              {performanceMetric === "search" ? <SearchInterestChart game={performanceGame} chartHeight={218} /> : <RankTrendChart metric={performanceMetric} game={performanceGame} />}
+              {performanceMetric === "search" ? <SearchInterestChart game={performanceGame} chartHeight={218} /> : <RankTrendChart metric={performanceMetric} game={performanceGame} chartHeight={232} />}
             </div>
             <aside className="performance-insights">
               <div className="impact-card">
@@ -439,11 +439,11 @@ export default function Home() {
               <h3>{currentQuest.title}</h3>
               <p className="quest-why"><strong>WHY</strong>{currentQuest.why}</p>
               <div className="quest-detail-columns"><div><span>HOW</span><ol>{currentQuest.how.map((item) => <li key={item}>{item}</li>)}</ol></div><div><span>RISK</span><p>{currentQuest.risk}</p></div><div><span>KPI</span>{currentQuest.kpi.map((item) => <b className="kpi-tag" key={item}>{item}</b>)}</div></div>
+              <div className="roadmap-card">
+                <div className="roadmap-head"><span className="eyebrow">EXECUTION ROADMAP</span><h3>단기부터 중장기까지, 실행 리스크를 분산합니다.</h3></div>
+                <div className="roadmap-line"><div className="roadmap-step blue"><i>1</i><b>단기 · 1개월</b><span>커뮤니티 모니터링 · 이벤트 캘린더 트래킹</span></div><div className="roadmap-step gold"><i>2</i><b>중기 · 1분기</b><span>타이밍 관리 체계 · 콜라보 후보 롱리스트</span></div><div className="roadmap-step purple"><i>3</i><b>장기 · 반기</b><span>상시복귀지원 · IP 콜라보 1건 이상</span></div><div className="roadmap-step green"><i>4</i><b>중장기 · 1년+</b><span>시스템 리마스터 로드맵 착수</span></div></div>
+              </div>
             </div>
-          </div>
-          <div className="roadmap-card">
-            <div className="roadmap-head"><span className="eyebrow">EXECUTION ROADMAP</span><h3>단기부터 중장기까지, 실행 리스크를 분산합니다.</h3></div>
-            <div className="roadmap-line"><div className="roadmap-step blue"><i>1</i><b>단기 · 1개월</b><span>커뮤니티 모니터링 · 이벤트 캘린더 트래킹</span></div><div className="roadmap-step gold"><i>2</i><b>중기 · 1분기</b><span>타이밍 관리 체계 · 콜라보 후보 롱리스트</span></div><div className="roadmap-step purple"><i>3</i><b>장기 · 반기</b><span>상시복귀지원 · IP 콜라보 1건 이상</span></div><div className="roadmap-step green"><i>4</i><b>중장기 · 1년+</b><span>시스템 리마스터 로드맵 착수</span></div></div>
           </div>
           <div className="risk-bar"><AlertTriangle size={16} /><b>RISK MANAGEMENT</b><span>4개 전략 동시 착수 시 리소스가 분산될 수 있습니다. 제안 KPI는 다수가 상관관계 지표이므로 매출·DAU 등 직접 지표는 별도 검증이 필요합니다.</span></div>
           <TeamMergePanel title={teamMergeCards.strategy.title} copy={teamMergeCards.strategy.copy}>
